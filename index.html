@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevSecOps Roadmap — Stage 2: Specialist Tracks</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg-alt: #1e293b;
+    --bg-card: #1e293b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #a78bfa;
+    --accent-2: #f472b6;
+    --ok: #22c55e;
+    --warn: #facc15;
+    --danger: #ef4444;
+    --border: #334155;
+    --code-bg: #0b1220;
+    --track-a: #38bdf8;
+    --track-b: #34d399;
+    --track-c: #fb923c;
+    --track-d: #a78bfa;
+    --track-e: #f43f5e;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8fafc;
+      --bg-alt: #ffffff;
+      --bg-card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #7c3aed;
+      --accent-2: #db2777;
+      --border: #e2e8f0;
+      --code-bg: #f1f5f9;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Sarabun", "Noto Sans Thai", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+  }
+  a { color: var(--accent); }
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    color: var(--accent-2);
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+    line-height: 1.5;
+  }
+  pre code { background: transparent; padding: 0; color: var(--text); }
+  .layout { display: grid; grid-template-columns: 290px 1fr; min-height: 100vh; }
+  nav.sidebar {
+    background: var(--bg-alt);
+    border-right: 1px solid var(--border);
+    padding: 24px 18px;
+    position: sticky; top: 0;
+    height: 100vh; overflow-y: auto;
+  }
+  nav.sidebar h2 {
+    font-size: 1.05em;
+    margin: 0 0 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  nav.sidebar ul { list-style: none; padding: 0; margin: 0 0 18px; }
+  nav.sidebar li { margin: 4px 0; }
+  nav.sidebar a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.92em;
+  }
+  nav.sidebar a:hover { background: var(--bg-card); }
+  nav.sidebar a.track-link {
+    border-left: 3px solid;
+    padding-left: 8px;
+    font-weight: 600;
+  }
+  .track-link.a { border-left-color: var(--track-a); }
+  .track-link.b { border-left-color: var(--track-b); }
+  .track-link.c { border-left-color: var(--track-c); }
+  .track-link.d { border-left-color: var(--track-d); }
+  .track-link.e { border-left-color: var(--track-e); }
+  .progress-summary {
+    margin-top: 20px;
+    padding: 12px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+  }
+  .progress-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--track-a), var(--track-d));
+    width: 0%;
+    transition: width 0.3s;
+  }
+  main { padding: 40px 56px; max-width: 1100px; }
+  header.hero {
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+  }
+  header.hero h1 {
+    font-size: 2.4em;
+    margin: 0 0 8px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  header.hero .subtitle { color: var(--muted); font-size: 1.1em; }
+
+  .meta-row {
+    display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85em;
+  }
+  .meta-pill strong { color: var(--accent); }
+
+  .selector {
+    margin: 32px 0;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .selector h2 { margin: 0 0 16px; color: var(--accent); }
+  .selector-table { width: 100%; border-collapse: collapse; }
+  .selector-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .selector-table td:first-child { width: 50%; }
+  .track-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: white;
+  }
+  .track-tag.a { background: var(--track-a); }
+  .track-tag.b { background: var(--track-b); }
+  .track-tag.c { background: var(--track-c); }
+  .track-tag.d { background: var(--track-d); }
+  .track-tag.e { background: var(--track-e); }
+
+  section.track {
+    margin: 40px 0;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    border-top: 5px solid;
+  }
+  section.track.a { border-top-color: var(--track-a); }
+  section.track.b { border-top-color: var(--track-b); }
+  section.track.c { border-top-color: var(--track-c); }
+  section.track.d { border-top-color: var(--track-d); }
+  section.track.e { border-top-color: var(--track-e); }
+
+  section.track h2 {
+    margin: 0 0 4px;
+    font-size: 1.7em;
+    display: flex; align-items: center; gap: 12px;
+  }
+  section.track.a h2 { color: var(--track-a); }
+  section.track.b h2 { color: var(--track-b); }
+  section.track.c h2 { color: var(--track-c); }
+  section.track.d h2 { color: var(--track-d); }
+  section.track.e h2 { color: var(--track-e); }
+
+  .track-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.55em;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .track-badge.a { background: var(--track-a); }
+  .track-badge.b { background: var(--track-b); }
+  .track-badge.c { background: var(--track-c); }
+  .track-badge.d { background: var(--track-d); }
+  .track-badge.e { background: var(--track-e); }
+
+  .track-meta { color: var(--muted); font-size: 0.95em; margin-bottom: 20px; }
+  .track-goal {
+    padding: 16px;
+    background: var(--bg);
+    border-left: 4px solid var(--accent-2);
+    border-radius: 6px;
+    margin-bottom: 24px;
+  }
+  .track-goal strong { color: var(--accent-2); }
+
+  .chapter {
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+  }
+  .chapter h3 {
+    margin: 0 0 8px;
+    font-size: 1.15em;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chapter-checkbox { width: 20px; height: 20px; cursor: pointer; }
+  .chapter-meta { color: var(--muted); font-size: 0.85em; margin-bottom: 12px; }
+  .topic-list { margin: 12px 0; padding-left: 20px; }
+  .topic-list li { margin: 4px 0; }
+
+  .exercise {
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .exercise-title {
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 8px;
+  }
+  .answer {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: var(--bg);
+    border-left: 4px solid var(--ok);
+    border-radius: 4px;
+  }
+  .answer.show { display: block; }
+  .answer h4 { margin: 0 0 8px; color: var(--ok); font-size: 0.95em; }
+  .reveal-btn {
+    margin-top: 8px;
+    padding: 6px 14px;
+    background: transparent;
+    color: var(--ok);
+    border: 1px solid var(--ok);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+  .reveal-btn:hover { background: var(--ok); color: var(--bg); }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 16px 0; font-size: 0.9em;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  th { background: var(--bg-alt); color: var(--accent); font-weight: 600; }
+  tr:nth-child(even) { background: rgba(167, 139, 250, 0.03); }
+
+  .callout {
+    margin: 16px 0;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent);
+    background: rgba(167, 139, 250, 0.05);
+  }
+  .callout.danger { border-left-color: var(--danger); background: rgba(239, 68, 68, 0.05); }
+  .callout.success { border-left-color: var(--ok); background: rgba(34, 197, 94, 0.05); }
+  .callout strong { color: var(--accent); }
+  .callout.danger strong { color: var(--danger); }
+  .callout.success strong { color: var(--ok); }
+
+  .controls {
+    position: fixed; top: 16px; right: 16px;
+    display: flex; gap: 8px; z-index: 100;
+  }
+  .control-btn {
+    padding: 8px 14px;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+  .control-btn:hover { background: var(--bg-alt); }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.sidebar { position: relative; height: auto; }
+    main { padding: 24px; }
+  }
+  @media print {
+    nav.sidebar, .controls, .reveal-btn { display: none !important; }
+    .answer { display: block !important; }
+    .layout { display: block; }
+    main { max-width: 100%; padding: 0; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <button class="control-btn" onclick="revealAll()">เปิดเฉลยทั้งหมด</button>
+  <button class="control-btn" onclick="hideAll()">ซ่อนเฉลยทั้งหมด</button>
+  <button class="control-btn" onclick="resetProgress()">รีเซ็ตความคืบหน้า</button>
+  <button class="control-btn" onclick="window.print()">พิมพ์ / PDF</button>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <h2>Stage 2 Tracks</h2>
+    <ul>
+      <li><a href="#intro">Intro &amp; Pre-requisite</a></li>
+      <li><a href="#selector">Track Selector</a></li>
+      <li><a href="#track-a" class="track-link a">A · Distributed Systems</a></li>
+      <li><a href="#track-b" class="track-link b">B · Kubernetes Deep</a></li>
+      <li><a href="#track-c" class="track-link c">C · Performance Eng</a></li>
+      <li><a href="#track-d" class="track-link d">D · Platform Eng</a></li>
+      <li><a href="#track-e" class="track-link e">E · Security Depth</a></li>
+      <li><a href="#real-stakes">Real Stakes Path</a></li>
+      <li><a href="#reading">Reading List</a></li>
+    </ul>
+    <div class="progress-summary">
+      <div>ความคืบหน้า: <span id="progress-text">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero" id="intro">
+      <h1>Stage 2 — Specialist Tracks</h1>
+      <div class="subtitle">From Senior → Staff/Principal · เลือก 1 track ที่ใช่ แล้วลึกจริง (ไม่ทำหมด!)</div>
+      <div class="meta-row">
+        <div class="meta-pill"><strong>Pre-req:</strong> จบ Stage 1 ทุก phase</div>
+        <div class="meta-pill"><strong>เวลา/track:</strong> 3-6 เดือน</div>
+        <div class="meta-pill"><strong>5 tracks:</strong> เลือก 1 ก่อน</div>
+        <div class="meta-pill"><strong>เน้น:</strong> ลึก ไม่กว้าง · paper · OSS</div>
+      </div>
+
+      <div class="callout danger">
+        <strong>กฎสำคัญ — อย่าทำทุก track พร้อมกัน</strong>
+        <p>Stage 2 ต่างจาก Stage 1 ตรงที่ <em>ความลึก</em> สำคัญกว่าความครอบคลุม. Engineer ที่เก่งระดับ Staff คือคนที่ <strong>ลึกหนึ่งทาง + รู้พื้นฐานทางอื่น</strong> ไม่ใช่ "รู้ทุกทางแบบกลางๆ".</p>
+        <p>เลือก 1 track ก่อน → ทำให้ลึกจริง 6 เดือน → ค่อยเริ่ม track ที่ 2 (หรืออาจไม่ต้องเริ่มเลย ถ้าทำงานจริงเริ่มดึงคุณไปทางอื่นแล้ว).</p>
+      </div>
+
+      <div class="callout">
+        <strong>โครงสร้างของแต่ละ track</strong>
+        <p>5-6 chapter ที่บังคับให้คุณ <em>เขียน code / ทดลองจริง / อ่าน paper</em> ไม่ใช่แค่อ่าน tutorial. แต่ละ chapter จบด้วย "deliverable" ที่จับต้องได้ — PR, blog post, หรือ tool ที่คนอื่นใช้ได้.</p>
+      </div>
+
+      <div class="callout success">
+        <strong>ใครเหมาะกับ Stage 2?</strong>
+        <ul>
+          <li>จบ Stage 1 + ทำ capstone จริง (ไม่ใช่อ่านอย่างเดียว)</li>
+          <li>มีงานจริงที่ใช้สิ่งที่เรียน (อย่าเรียนในสุญญากาศ)</li>
+          <li>ยินดี <em>"ทำของที่ทำไม่ได้"</em> เป็นเรื่องปกติ — Stage 2 จะ stuck บ่อย</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- ============ SELECTOR ============ -->
+    <section class="selector" id="selector">
+      <h2>🧭 Track Selector — ฉันควรเลือก track ไหน?</h2>
+      <p>ตอบคำถาม "เวลาดูระบบใหญ่ๆ คุณตื่นเต้นกับอะไรมากที่สุด?" — ดู column ขวาเพื่อดูว่า track ไหนใช่</p>
+      <table class="selector-table">
+        <tr>
+          <td>"ทำไม Cassandra ทนต่อ network partition ได้แต่ Postgres ไม่ได้? Consensus algorithm ทำงานยังไงจริงๆ?"</td>
+          <td><span class="track-tag a">Track A</span> Distributed Systems</td>
+        </tr>
+        <tr>
+          <td>"K8s scheduler ตัดสินใจวาง pod ที่ node ไหนยังไง? ถ้าฉันอยากเปลี่ยน behavior นี้ทำได้ไหม?"</td>
+          <td><span class="track-tag b">Track B</span> Kubernetes Deep</td>
+        </tr>
+        <tr>
+          <td>"API ตอบช้า 200ms — ฉันอยากรู้ว่า 200ms นั้นใช้ไปกับอะไรบ้าง ทุก nanosecond"</td>
+          <td><span class="track-tag c">Track C</span> Performance</td>
+        </tr>
+        <tr>
+          <td>"ฉันอยากให้ทีม dev อื่น deploy ได้เองโดยไม่ต้องถามฉันทุกครั้ง — สร้าง 'ทางลัด' ให้พวกเขาได้ไหม?"</td>
+          <td><span class="track-tag d">Track D</span> Platform Engineering</td>
+        </tr>
+        <tr>
+          <td>"ถ้าฉันเป็น attacker ฉันจะเข้าระบบนี้ยังไง? ฉันชอบคิดเรื่องนี้มากกว่าคิดเรื่อง feature"</td>
+          <td><span class="track-tag e">Track E</span> Security Depth</td>
+        </tr>
+      </table>
+      <div class="callout">
+        <strong>ถ้าตอบได้ทุกข้อแบบ "อันไหนก็สนใจ"</strong> — แปลว่าคุณยังไม่ได้ทำของจริงพอ. กลับไปทำ capstone Stage 1 ก่อน หรือลอง side project ที่บีบให้คุณเลือก.
+      </div>
+    </section>
+
+    <!-- ============ TRACK A: DISTRIBUTED SYSTEMS ============ -->
+    <section class="track a" id="track-a">
+      <h2>Track A — Distributed Systems Engineering <span class="track-badge a">6 MONTHS</span></h2>
+      <div class="track-meta">เหมาะกับ: คนที่อยากเข้าใจ "ทำไม database ตัวนี้ทำสิ่งนี้ได้แต่ตัวอื่นทำไม่ได้" · เน้น paper + เขียนโค้ดเอง</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> หลังจบ track นี้ คุณจะอ่าน paper อย่าง Spanner/Dynamo/Raft ได้แล้วเข้าใจ — และที่สำคัญ ออกแบบระบบที่มี consistency/availability trade-off ได้อย่างมั่นใจ. คุณจะไม่กลัวคำถาม "CAP theorem" ในสัมภาษณ์ FAANG.
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="a-1"> A.1 — Consistency Models &amp; CAP/PACELC</h3>
+        <div class="chapter-meta">เวลา: 2-3 สัปดาห์ · Paper: "Consistency in Non-Transactional Distributed Storage Systems" (Viotti &amp; Vukolić)</div>
+        <ul class="topic-list">
+          <li>Linearizability vs Sequential vs Causal vs Eventual</li>
+          <li>CAP theorem — ทำไม Brewer พูดผิดไป 12 ปี (และ PACELC ที่ถูกต้องกว่า)</li>
+          <li>Read-your-writes, monotonic reads, monotonic writes — ทำไม session guarantee สำคัญ</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">A.1.1 — สร้าง KV store ที่ implement read-your-writes consistency</div>
+          <p>เขียน in-memory KV store ใน Go/Rust/TypeScript ที่มี 3 node. Client write ไป node A → ต้องอ่านจาก node B/C ได้ค่าเดิม (ไม่ใช่ stale value). จะทำได้ยังไงโดยไม่ใช้ strong consistency?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู approach</button>
+          <div class="answer">
+<pre><code>// Approach: client carries "session token" = vector clock
+// Every write returns a token (e.g., {nodeA: 5, nodeB: 3, nodeC: 4})
+// Every read sends back the latest token
+// Read node only serves request if its local clock >= token
+
+// Pseudocode
+type SessionToken = map[NodeID]uint64
+
+// Client side
+let myToken: SessionToken = {}
+
+write(key, val) {
+  res = sendToAnyNode({ key, val })
+  myToken = max(myToken, res.token)  // merge
+}
+
+read(key) {
+  res = sendToAnyNode({ key, ifAtLeast: myToken })
+  // node compares its local clock; if behind, either:
+  //   - reject (client retries another node), or
+  //   - block until caught up (gossip)
+  myToken = max(myToken, res.token)
+  return res.value
+}
+
+// ทำไมนี่คือ "read-your-writes"
+// client เขียน V1 → token = {A:5}
+// client read หา node ที่ clock A >= 5
+// → ไม่มีทางอ่าน V0 ได้
+</code></pre>
+            <p><strong>เรียนต่อ:</strong> เปรียบเทียบกับ Cassandra <code>LOCAL_QUORUM</code> read+write — ก็ใช้หลักนี้แต่ผ่าน quorum overlap ไม่ใช่ vector clock.</p>
+            <p><strong>Deliverable:</strong> Push code ขึ้น GitHub + เขียน README ที่มี diagram. Bonus: เขียน blog "How I built read-your-writes in 200 lines".</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="a-2"> A.2 — Consensus (Raft from scratch)</h3>
+        <div class="chapter-meta">เวลา: 4-6 สัปดาห์ · Paper: "In Search of an Understandable Consensus Algorithm" (Ongaro &amp; Ousterhout, Raft paper)</div>
+        <ul class="topic-list">
+          <li>Leader election, log replication, safety property</li>
+          <li>Why Raft &gt; Paxos in industry (understandability matters)</li>
+          <li>etcd / Consul / TiKV ทุกตัวใช้ Raft — รู้ลึกแล้ว debug ได้</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">A.2.1 — Implement Raft leader election + log replication</div>
+          <p>ทำตาม MIT 6.824 Lab 2A &amp; 2B — implement Raft algorithm ใน Go. ผ่าน test ที่ MIT ให้ (ที่จำลอง network partition, leader crash). ห้ามใช้ library ที่ implement Raft ให้แล้ว</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู resource &amp; approach</button>
+          <div class="answer">
+            <p><strong>Resources (ทำตามลำดับ):</strong></p>
+            <ol>
+              <li>อ่าน Raft paper หน้า 1-12 (เน้น figure 2 — เป็น cheat sheet ที่ implement ได้ตรงๆ)</li>
+              <li>ดู Raft visualization: <code>https://raft.github.io/raftscope/</code> — เล่นจน intuition แน่น</li>
+              <li>MIT 6.824 lab: <code>https://pdos.csail.mit.edu/6.824/labs/lab-raft.html</code></li>
+              <li>เริ่มที่ Lab 2A (election) ก่อน — ผ่าน test ทุก case ก่อนข้าม 2B</li>
+            </ol>
+            <p><strong>Architecture sketch:</strong></p>
+<pre><code>type Raft struct {
+  // persistent
+  currentTerm int
+  votedFor    int
+  log         []LogEntry
+
+  // volatile (all servers)
+  commitIndex int
+  lastApplied int
+
+  // volatile (leader only)
+  nextIndex  []int
+  matchIndex []int
+
+  state State  // Follower | Candidate | Leader
+  electionTimer *time.Timer
+}
+
+func (rf *Raft) ticker() {
+  for !rf.killed() {
+    select {
+    case <-rf.electionTimer.C:
+      rf.startElection()  // become Candidate, RequestVote RPC
+    case <-rf.heartbeatTicker.C:
+      if rf.state == Leader {
+        rf.broadcastAppendEntries()  // empty entries = heartbeat
+      }
+    }
+  }
+}
+</code></pre>
+            <p><strong>Pitfall ที่ทุกคนเจอ:</strong></p>
+            <ul>
+              <li>Lock contention — ใช้ <code>sync.Mutex</code> coarse-grained ตอนแรก, optimize ทีหลัง</li>
+              <li>Election timeout ต้อง random (150-300ms) ไม่งั้น vote split ตลอด</li>
+              <li>Term ต้อง update ก่อน state เปลี่ยน — order สำคัญ</li>
+            </ul>
+            <p><strong>Deliverable:</strong> ผ่าน test ทุก case ใน Lab 2A+2B. Push private repo (MIT ห้าม public). เขียน blog "What I learned implementing Raft".</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="a-3"> A.3 — Replication, Failure Detection, Gossip</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Papers: SWIM (Das et al), Dynamo (Amazon)</div>
+        <ul class="topic-list">
+          <li>Master-slave vs leaderless replication</li>
+          <li>Anti-entropy, read repair, hinted handoff</li>
+          <li>SWIM gossip protocol — ทำไม Cassandra/Consul ใช้</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">A.3.1 — Implement SWIM-style gossip + simulate partition</div>
+          <p>เขียน gossip protocol ที่ 10 node sync membership view กัน. simulate network partition (block message ระหว่าง 2 group). วัดเวลา convergence หลัง partition ฟื้น</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู approach</button>
+          <div class="answer">
+            <p><strong>SWIM ในประโยคเดียว:</strong> ทุก node ทุก period (T): (1) ping random node, (2) ถ้า timeout, ขอ k node อื่น ping แทน, (3) ถ้ายัง timeout = mark suspected, (4) แชร์ membership update piggyback กับ ping packet ปกติ.</p>
+<pre><code>// Pseudocode (simplified)
+class Node {
+  members: Map&lt;NodeId, MemberState&gt;
+  incarnation: number = 0
+
+  async tick() {
+    // 1. Direct ping
+    const target = randomMember()
+    const ok = await pingWithTimeout(target, 200ms)
+    if (ok) return
+
+    // 2. Indirect ping (via k=3 helpers)
+    const helpers = randomMembers(3, exclude=[target])
+    const indirectOk = await Promise.any(
+      helpers.map(h =&gt; h.pingProxy(target, 200ms))
+    )
+    if (indirectOk) return
+
+    // 3. Mark suspect
+    this.members.set(target, { state: 'suspect', timestamp: now() })
+    this.broadcastUpdate(target, 'suspect')
+  }
+
+  // After T_confirm, suspect → confirmed dead
+}
+
+// Gossip = piggyback membership delta on every ping
+</code></pre>
+            <p><strong>Lab setup:</strong> ใช้ Docker Compose 10 container, network namespace. Simulate partition ด้วย <code>iptables DROP</code> ระหว่าง 2 subnet. วัดเวลาตั้งแต่ partition ฟื้น → ทุก node เห็น membership ถูกต้อง.</p>
+            <p><strong>Deliverable:</strong> Repo + benchmark report. Compare กับ <code>memberlist</code> (Hashicorp's SWIM impl). ถ้าทำดี — ทำเป็น talk ที่ meetup ได้</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="a-4"> A.4 — Jepsen-style Linearizability Testing</h3>
+        <div class="chapter-meta">เวลา: 3-4 สัปดาห์ · Resource: jepsen.io reports (อ่าน Cassandra, MongoDB, etcd analyses)</div>
+        <ul class="topic-list">
+          <li>Linearizability checker (Knossos / Porcupine algorithm)</li>
+          <li>Network fault injection (clumsy / tc / iptables)</li>
+          <li>อ่าน Jepsen reports — เห็นว่า DB ดังๆ ก็มี consistency bug</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">A.4.1 — เขียน linearizability checker สำหรับ KV store ใน A.1</div>
+          <p>(1) เก็บ history ของทุก operation (start time, end time, type, args, result), (2) เขียน checker ที่หา linearization order ที่เป็นไปได้, (3) inject network partition แล้ว verify ว่า KV store ยัง consistent (หรือพิสูจน์ว่ามี bug)</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู approach + reference</button>
+          <div class="answer">
+            <p><strong>Algorithm summary (Wing &amp; Gong 1993):</strong></p>
+            <ol>
+              <li>History = list of events: <code>{op, args, result, t_invoke, t_return}</code></li>
+              <li>Sort by t_invoke</li>
+              <li>Brute-force หา permutation ที่: (a) preserve real-time order ของ non-overlapping ops, (b) ผลลัพธ์ตรงกับ sequential spec</li>
+              <li>Optimization: backtracking + pruning (Porcupine paper จาก Anish Athalye)</li>
+            </ol>
+            <p><strong>Easier path:</strong> ใช้ <code>github.com/anishathalye/porcupine</code> (Go) แทนเขียนเอง. Focus ที่ history collection + fault injection.</p>
+<pre><code>// Test setup
+import "github.com/anishathalye/porcupine"
+
+ops := []porcupine.Operation{
+  { ClientId: 0, Input: kvInput{op: "put", key: "x", val: "1"},
+    Call: 1000, Output: kvOutput{}, Return: 1100 },
+  { ClientId: 1, Input: kvInput{op: "get", key: "x"},
+    Call: 1050, Output: kvOutput{val: "0"}, Return: 1150 },
+  // ...
+}
+
+result := porcupine.CheckOperations(kvModel, ops)
+if result == porcupine.Ok {
+  fmt.Println("Linearizable!")
+} else {
+  // visualize: porcupine.Visualize(...)
+}
+</code></pre>
+            <p><strong>Fault injection:</strong></p>
+<pre><code># Drop 50% packet ระหว่าง node1 ↔ node2
+sudo tc qdisc add dev eth0 root netem loss 50%
+
+# หรือ block ทั้งหมด (full partition)
+sudo iptables -A INPUT -s 10.0.0.2 -j DROP
+
+# คืนสภาพ
+sudo iptables -D INPUT -s 10.0.0.2 -j DROP
+</code></pre>
+            <p><strong>Deliverable:</strong> Repo + report "Did my KV store violate linearizability under X% packet loss?". อาจเป็น blog ที่ดีมาก เพราะคนทั่วไปไม่เคยทำ.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="a-5"> A.5 — Reading the Greats (Paper Club)</h3>
+        <div class="chapter-meta">เวลา: ตลอด track · Papers: Dynamo, Spanner, BigTable, MapReduce, Chubby</div>
+        <ul class="topic-list">
+          <li>Dynamo (Amazon, 2007) — eventual consistency at scale</li>
+          <li>Spanner (Google, 2012) — TrueTime + globally consistent transactions</li>
+          <li>BigTable (Google, 2006) — wide-column store</li>
+          <li>The Log (Jay Kreps blog) — pre-Kafka thinking</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">A.5.1 — Distillation: อ่าน Dynamo paper แล้วเขียนสรุป 1 หน้า</div>
+          <p>อ่าน Dynamo paper (15 หน้า). เขียนสรุปแบบ "ถ้าฉันต้อง implement Dynamo เริ่มที่ไหน?" ใน 1 หน้า A4. ห้าม copy abstract ของ paper</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดูตัวอย่าง outline</button>
+          <div class="answer">
+            <p><strong>Outline ที่ดี (ของ Dynamo):</strong></p>
+            <ol>
+              <li><strong>Problem:</strong> Amazon ต้องการ KV store ที่ "always writeable" — ยอมเสีย consistency ก่อน availability (CAP: AP)</li>
+              <li><strong>Key techniques (5 อัน):</strong>
+                <ul>
+                  <li>Consistent hashing — เพิ่ม/ลด node ไม่ rebalance ทั้งโลก</li>
+                  <li>Vector clock — track concurrent versions</li>
+                  <li>Sloppy quorum + hinted handoff — survive partition</li>
+                  <li>Anti-entropy with Merkle tree — sync replica</li>
+                  <li>Gossip-based membership — ไม่มี master</li>
+                </ul>
+              </li>
+              <li><strong>Trade-off ที่ Amazon ยอม:</strong> client ต้อง resolve conflict (ไม่ใช่ DB) — เพราะ business rule รู้ดีกว่า</li>
+              <li><strong>What I'd do differently in 2026:</strong> ใช้ CRDT แทน vector clock + last-write-wins</li>
+              <li><strong>Implementation hint:</strong> เริ่มที่ consistent hashing ring (50 LOC) → vector clock → quorum read/write → anti-entropy</li>
+            </ol>
+            <p><strong>Deliverable:</strong> 1-page distillation × 5 paper = 5 หน้า. Post ใน Notion/blog. ทำเป็น "paper club" กับเพื่อน 2-3 คน meet ทุก 2 สัปดาห์ — บังคับให้คุณเข้าใจจริง (สอนคนอื่น = เรียนซ้ำ).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>Capstone — Track A</strong>
+        <p>สร้าง mini-database (KV หรือ document) ที่ใช้ Raft + linearizability test ของตัวเอง. Run Jepsen test ผ่าน. Open source ใน GitHub. เขียน technical blog 3 ตอน. <em>ถ้าเก่งจริง:</em> contribute PR เล็กๆ ไปที่ etcd / TiKV / FoundationDB.</p>
+      </div>
+    </section>
+
+    <!-- ============ TRACK B: KUBERNETES DEEP ============ -->
+    <section class="track b" id="track-b">
+      <h2>Track B — Kubernetes Deep Engineering <span class="track-badge b">5 MONTHS</span></h2>
+      <div class="track-meta">เหมาะกับ: คนที่ใช้ K8s แล้วอยากรู้ "ข้างใน" จนเขียน controller / debug etcd ได้ · เน้น Go + upstream contribution</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> หลังจบ track นี้ คุณจะอ่าน K8s source code ได้, เขียน operator ที่มีคนใช้จริง, และ debug production K8s issue ที่ "engineer ปกติ" ไม่กล้าแตะ. คุณจะเป็นคนที่ทีมเรียกตอน etcd ค้าง.
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="b-1"> B.1 — K8s Internals Architecture</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: "Kubernetes The Hard Way" (Kelsey Hightower) + source code reading</div>
+        <ul class="topic-list">
+          <li>etcd, kube-apiserver, scheduler, controller-manager, kubelet, kube-proxy — แต่ละตัวคุยกันยังไง</li>
+          <li>Reconciliation loop pattern (ทุก controller ใช้)</li>
+          <li>API machinery: watch, informer, work queue</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">B.1.1 — Trace pod creation through every component</div>
+          <p>เปิด audit log + component log ของ K8s. สร้าง pod 1 ตัว. trace ทุก event: API server receive → etcd write → scheduler watch → bind → kubelet pull → containerd → cgroup. เขียน timeline diagram</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู approach &amp; expected output</button>
+          <div class="answer">
+            <p><strong>Setup (kind หรือ kubeadm cluster):</strong></p>
+<pre><code># เปิด audit logging
+cat &gt; /etc/kubernetes/audit-policy.yaml &lt;&lt;'EOF'
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods", "events"]
+EOF
+
+# kube-apiserver flags:
+#   --audit-policy-file=/etc/kubernetes/audit-policy.yaml
+#   --audit-log-path=/var/log/audit.log
+#   --v=4   # verbose
+
+# ดู log แต่ละ component
+journalctl -u kubelet -f
+journalctl -u kube-scheduler -f
+journalctl -u kube-controller-manager -f
+tail -f /var/log/audit.log
+</code></pre>
+            <p><strong>Expected timeline (จากการ trace จริง):</strong></p>
+<pre><code>T+0    kubectl apply → POST /api/v1/namespaces/default/pods
+T+1ms  kube-apiserver: validate, mutating webhook, admission control
+T+5ms  kube-apiserver → etcd PUT /registry/pods/default/&lt;name&gt;
+T+8ms  etcd watch event → multiple watchers receive
+T+10ms kube-scheduler: see Pod with .spec.nodeName=""
+T+15ms scheduler: PreFilter, Filter, Score plugins → pick node
+T+18ms scheduler: POST /pods/&lt;name&gt;/binding → Pod.spec.nodeName set
+T+25ms kubelet (on chosen node): watch sees Pod assigned to me
+T+30ms kubelet: cAdvisor reserves resources, cgroup setup
+T+50ms kubelet → containerd: PullImage RPC
+T+5s   containerd: image pulled, unpacked
+T+5.1s containerd: CreateContainer, StartContainer
+T+5.2s kubelet: probe (readiness) → update Pod status
+T+5.3s kube-apiserver → etcd: write status
+T+5.3s endpoint controller: see new ready Pod → update Endpoints
+T+5.4s kube-proxy: see Endpoints update → update iptables/IPVS
+</code></pre>
+            <p><strong>Insight:</strong> 5 วินาทีนั้น 99% คือ image pull. ถ้า image cache อยู่ → 200ms. Optimization สำคัญ: image pre-pull + smaller image.</p>
+            <p><strong>Deliverable:</strong> Sequence diagram (Mermaid/PlantUML) push ขึ้น GitHub. ทำเป็น brown-bag talk ที่ทำงาน — ทีมจะเข้าใจ K8s ลึกขึ้นทุกคน.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="b-2"> B.2 — Custom Resources &amp; Controllers (controller-runtime)</h3>
+        <div class="chapter-meta">เวลา: 4 สัปดาห์ · Resource: kubebuilder book + sample-controller</div>
+        <ul class="topic-list">
+          <li>CRD vs aggregated API server</li>
+          <li>Reconciler pattern, informer cache, work queue</li>
+          <li>Status subresource, finalizer, owner reference</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">B.2.1 — เขียน controller สำหรับ "ScheduledJob" CRD</div>
+          <p>สร้าง CRD <code>ScheduledJob</code> ที่ทำงานเหมือน CronJob แต่: (1) รัน job ใน timezone ที่กำหนด (ไม่ใช่ UTC), (2) มี notification webhook เมื่อ fail. เขียนด้วย kubebuilder. Deploy บน kind</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู skeleton</button>
+          <div class="answer">
+<pre><code># Bootstrap
+kubebuilder init --domain example.com --repo github.com/you/sched-job
+kubebuilder create api --group batch --version v1 --kind ScheduledJob
+
+# CRD type (api/v1/scheduledjob_types.go)
+type ScheduledJobSpec struct {
+  Schedule    string             `json:"schedule"`     // cron expression
+  Timezone    string             `json:"timezone"`     // "Asia/Bangkok"
+  Template    batchv1.JobTemplateSpec `json:"template"`
+  WebhookURL  string             `json:"webhookUrl,omitempty"`
+}
+
+type ScheduledJobStatus struct {
+  LastRunTime *metav1.Time `json:"lastRunTime,omitempty"`
+  LastResult  string       `json:"lastResult,omitempty"`  // success | failed
+  ActiveJob   *corev1.ObjectReference `json:"activeJob,omitempty"`
+}
+
+# Reconciler (controllers/scheduledjob_controller.go)
+func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+  var sj batchv1.ScheduledJob
+  if err := r.Get(ctx, req.NamespacedName, &amp;sj); err != nil {
+    return ctrl.Result{}, client.IgnoreNotFound(err)
+  }
+
+  loc, err := time.LoadLocation(sj.Spec.Timezone)
+  if err != nil { return ctrl.Result{}, err }
+  schedule, err := cron.Parse(sj.Spec.Schedule)
+  if err != nil { return ctrl.Result{}, err }
+
+  now := time.Now().In(loc)
+  next := schedule.Next(now)
+
+  // ถ้าถึงเวลา → spawn Job
+  if shouldRunNow(sj.Status.LastRunTime, next, now) {
+    job := buildJob(&amp;sj)
+    ctrl.SetControllerReference(&amp;sj, job, r.Scheme)  // owner ref
+    r.Create(ctx, job)
+    sj.Status.LastRunTime = &amp;metav1.Time{Time: now}
+    r.Status().Update(ctx, &amp;sj)
+  }
+
+  // ตรวจ active job
+  if sj.Status.ActiveJob != nil {
+    var job batchv1.Job
+    r.Get(ctx, key, &amp;job)
+    if job.Status.Failed &gt; 0 &amp;&amp; sj.Spec.WebhookURL != "" {
+      go sendWebhook(sj.Spec.WebhookURL, "failed", job.Name)
+    }
+  }
+
+  return ctrl.Result{RequeueAfter: time.Until(next)}, nil
+}
+
+# Build &amp; deploy
+make manifests       # generate CRD YAML
+make install         # apply CRD to cluster
+make run             # run controller locally (against cluster)
+</code></pre>
+            <p><strong>กฎทอง:</strong> Reconciler ต้อง <em>idempotent</em> — รันซ้ำ 100 ครั้งต้องได้ผลเดียวกัน. ใช้ <code>controllerutil.CreateOrUpdate</code>.</p>
+            <p><strong>Deliverable:</strong> Open-source operator + README + diagram. ใส่ใน OperatorHub ถ้ามั่นใจ.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="b-3"> B.3 — Operator for Real Workload</h3>
+        <div class="chapter-meta">เวลา: 6 สัปดาห์ · Resource: existing operators (Postgres, Redis, Strimzi Kafka)</div>
+        <ul class="topic-list">
+          <li>Day-2 operations: backup, restore, scale, upgrade</li>
+          <li>StatefulSet patterns (headless service, ordinal pod, PVC retention)</li>
+          <li>Operator capability levels (Level 1-5 OperatorHub model)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">B.3.1 — เขียน Operator สำหรับ PostgreSQL backup &amp; restore</div>
+          <p>สร้าง <code>PostgresBackup</code> CRD: ระบุ DB connection + S3/OBS bucket. Operator schedule pg_dump → upload OBS → keep N copies. มี <code>PostgresRestore</code> CRD ด้วย</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู design</button>
+          <div class="answer">
+<pre><code># CRDs
+apiVersion: db.example.com/v1
+kind: PostgresBackup
+metadata:
+  name: prod-daily
+spec:
+  source:
+    secretRef: postgres-creds    # contains host/user/password
+    database: production
+  destination:
+    type: OBS
+    bucket: pg-backups
+    prefix: prod/
+    secretRef: obs-creds
+  schedule: "0 2 * * *"          # 2am daily
+  retention:
+    count: 7                     # keep last 7 backups
+    minAge: 24h
+status:
+  lastBackupTime: "2026-04-26T02:00:15Z"
+  lastBackupSize: 4.2GiB
+  lastBackupKey: "prod/2026-04-26-020015.sql.gz"
+  history:
+    - { time, size, key, durationSeconds, ok: true }
+
+---
+apiVersion: db.example.com/v1
+kind: PostgresRestore
+metadata:
+  name: restore-2026-04-26
+spec:
+  source:
+    backupRef: prod-daily
+    backupKey: "prod/2026-04-26-020015.sql.gz"  # หรือ "latest"
+  destination:
+    secretRef: postgres-staging-creds
+status:
+  state: Running | Completed | Failed
+  startedAt: ...
+  completedAt: ...
+</code></pre>
+            <p><strong>Implementation pattern:</strong></p>
+            <ul>
+              <li>Reconciler ของ PostgresBackup → spawn CronJob ที่รัน pg_dump container</li>
+              <li>Pod ใช้ projected volume mount secret credentials</li>
+              <li>Sidecar container ทำ upload + retention cleanup</li>
+              <li>Update status subresource หลัง backup เสร็จ</li>
+            </ul>
+            <p><strong>Capability levels (เป้าหมาย):</strong></p>
+            <ul>
+              <li>L1 Basic Install ✓</li>
+              <li>L2 Seamless Upgrade ✓</li>
+              <li>L3 Full Lifecycle (backup ✓ + restore ✓)</li>
+              <li>L4 Deep Insights (metrics, alerts) — bonus</li>
+              <li>L5 Auto Pilot (auto-tuning) — out of scope</li>
+            </ul>
+            <p><strong>Deliverable:</strong> Open-source operator. ถ้าใช้ที่ทำงานจริงด้วย — ดียิ่งกว่า. Submit ไป operatorhub.io.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="b-4"> B.4 — Production K8s Debugging Scenarios</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Practice on broken-by-design clusters</div>
+        <ul class="topic-list">
+          <li>etcd OOM / disk full / corrupt</li>
+          <li>Scheduler stuck / pod pending forever</li>
+          <li>Network policy blocking unexpectedly</li>
+          <li>kubelet PLEG issue (container runtime hang)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">B.4.1 — Scenario lab: "etcd ใช้ disk เต็ม"</div>
+          <p>(1) Setup kind cluster with limited etcd disk, (2) สร้าง resource จนเต็ม (Secrets, ConfigMaps), (3) สังเกต cluster behavior, (4) แก้ปัญหา (defrag, snapshot restore, raise quota)</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู runbook</button>
+          <div class="answer">
+<pre><code># Symptoms ที่เห็น
+$ kubectl get pods
+Error from server: etcdserver: mvcc: database space exceeded
+
+# Diagnosis
+$ kubectl exec -n kube-system etcd-master -- etcdctl \
+    --endpoints=https://localhost:2379 \
+    --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+    --cert=/etc/kubernetes/pki/etcd/server.crt \
+    --key=/etc/kubernetes/pki/etcd/server.key \
+    endpoint status -w table
+# +-------+----+---------+---------+
+# | ID    | .. | DB SIZE | LEADER  |
+# | abc   |    | 2.0 GB  | true    |    ← เต็ม quota default 2GB
+# +-------+----+---------+---------+
+
+# Resolution path:
+# 1. ดู revision ที่ใช้พื้นที่
+etcdctl endpoint status -w json | jq '.[] | .Status.dbSize, .Status.dbSizeInUse'
+# diff = fragmented space
+
+# 2. Compact + defrag
+REV=$(etcdctl endpoint status -w json | jq '.[].Status.header.revision')
+etcdctl compact $REV
+etcdctl defrag
+
+# 3. Disarm alarm
+etcdctl alarm list
+etcdctl alarm disarm
+
+# 4. Increase quota (long-term)
+# kube-apiserver flag (or etcd config):
+#   --quota-backend-bytes=8589934592  # 8GB
+
+# Prevention
+# - Auto-compact: --auto-compaction-mode=periodic --auto-compaction-retention=8h
+# - Alert ก่อนเต็ม: etcd_mvcc_db_total_size_in_use_in_bytes / quota &gt; 0.7
+</code></pre>
+            <p><strong>เรียนรู้ข้างเคียง:</strong> Secret/ConfigMap ที่ change บ่อย (เช่น cert-manager rotate ทุกชั่วโมง) ทำให้ etcd revision พุ่ง. Solution: turn off rotate too aggressive.</p>
+            <p><strong>อื่นๆที่ควรซ้อม:</strong> kube-scheduler ค้างเพราะ leader election issue, kubelet PLEG (Pod Lifecycle Event Generator) timeout, NetworkPolicy ที่ block แต่ไม่ log.</p>
+            <p><strong>Resource:</strong> "Kubernetes Failure Stories" (k8s.af) — อ่าน 5 stories ต่อสัปดาห์</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="b-5"> B.5 — Upstream Contribution</h3>
+        <div class="chapter-meta">เวลา: ตลอด track · Goal: 1 merged PR ภายใน 6 เดือน</div>
+        <ul class="topic-list">
+          <li>K8s SIG (Special Interest Group) ทำงานยังไง</li>
+          <li>Find "good first issue" + ขนาด PR ที่ realistic</li>
+          <li>CLA, code review, sign-off — process จริง</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">B.5.1 — ส่ง PR แรกไป K8s ecosystem (ไม่ต้อง core)</div>
+          <p>เริ่มที่ project ใน <code>kubernetes-sigs/</code> หรือ controller-runtime หรือ kubebuilder. หา issue tag <code>good first issue</code> หรือ <code>help wanted</code>. เริ่มเล็ก: documentation fix → bug fix → feature</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู 90-day plan</button>
+          <div class="answer">
+            <p><strong>Week 1-2:</strong></p>
+            <ul>
+              <li>Sign Google CLA (kubernetes/community)</li>
+              <li>เลือก SIG ที่สนใจ: SIG-Apps, SIG-Network, SIG-Storage</li>
+              <li>Subscribe mailing list + Slack channel ของ SIG นั้น</li>
+              <li>Lurk meeting 2 รอบ (recording บน YouTube)</li>
+            </ul>
+            <p><strong>Week 3-6:</strong></p>
+            <ul>
+              <li>Browse issue: <code>https://github.com/kubernetes-sigs/...?q=is:issue+label:"good+first+issue"</code></li>
+              <li>เลือก issue ที่: ขนาดเล็ก (&lt; 100 LOC), ชัดเจน, ยังไม่มีคน claim</li>
+              <li>Comment ขอทำ ก่อนเริ่ม code (mentor จะตอบ)</li>
+              <li>Fork → branch → code → test → commit ที่มี <code>Signed-off-by:</code></li>
+              <li>ส่ง PR — รอ review &gt;= 2 maintainer</li>
+            </ul>
+            <p><strong>Week 7-12:</strong></p>
+            <ul>
+              <li>แก้ตาม review feedback (รอบที่ 1-3 ปกติ)</li>
+              <li>เมื่อ merge → เก็บ link ใส่ portfolio + LinkedIn</li>
+              <li>ถัดไป: PR ที่ใหญ่ขึ้น เช่น new feature, performance fix</li>
+            </ul>
+            <p><strong>Mindset:</strong> PR แรกอาจใช้เวลา 2-4 เดือน เพราะมี process. PR ที่ 5 จะเร็วขึ้น 10x. <em>นี่คือ multiplier ของอาชีพ</em> — ติดชื่อใน CHANGELOG ของ project ระดับโลก.</p>
+            <p><strong>Easier alternative:</strong> Maintain own operator (จาก B.3) ที่มีคนใช้จริง 10+ คน. Track issue, fix bug — นับเป็น "real maintainer" experience เหมือนกัน.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>Capstone — Track B</strong>
+        <p>(1) Operator ที่ open source + มี user ที่ไม่ใช่คุณอย่างน้อย 5 คน, (2) Merged PR ใน K8s ecosystem 1 อัน, (3) Talk ที่ K8s meetup (TH K8s, KubeCon, etc.), (4) Documented 3 production incidents ที่ debug แก้ได้ (ที่คนอื่นแก้ไม่ได้).</p>
+      </div>
+    </section>
+
+    <!-- ============ TRACK C: PERFORMANCE ============ -->
+    <section class="track c" id="track-c">
+      <h2>Track C — Performance Engineering <span class="track-badge c">5 MONTHS</span></h2>
+      <div class="track-meta">เหมาะกับ: คนที่อยากเข้าใจทุก nanosecond ของ request · เน้น profiling, eBPF, kernel-level tools</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> หลังจบ track นี้ คุณจะ "เห็น" ทุกชั้นของ stack ที่ทำให้ request ช้า — จาก JIT compiler → syscall → kernel scheduler → NIC. คุณจะเป็นคนที่ทีมเรียกตอน "API ช้าโดยไม่มี alert ไหนแดง".
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="c-1"> C.1 — Profiling Fundamentals</h3>
+        <div class="chapter-meta">เวลา: 2-3 สัปดาห์ · Resource: Brendan Gregg's "Systems Performance" Chapter 5-6</div>
+        <ul class="topic-list">
+          <li>CPU profiling (sampling vs instrumentation)</li>
+          <li>Flame graph — อ่านยังไงให้เข้าใจใน 10 วินาที</li>
+          <li>Heap profiling, allocation tracking</li>
+          <li>USE method (Utilization, Saturation, Errors) สำหรับทุก resource</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">C.1.1 — Profile Node.js app ที่ "ช้าโดยไม่รู้ทำไม"</div>
+          <p>Setup app ที่มี endpoint ช้า (ผม seed bug ให้). ใช้ <code>clinic.js doctor</code> + <code>flame</code> หาสาเหตุ. ใส่ workload จำลอง (autocannon) ระหว่าง profile. เขียน flame graph diagnosis</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู workflow + flame graph reading</button>
+          <div class="answer">
+<pre><code># Setup
+npm i -g clinic autocannon
+git clone &lt;your-app&gt;
+
+# 1. Doctor — overall health
+clinic doctor --on-port 'autocannon -c 100 -d 30 http://localhost:3000/api/slow' -- node app.js
+# เปิด report HTML — ดู Event Loop Delay graph
+
+# 2. Flame — CPU profile
+clinic flame --on-port 'autocannon -c 100 -d 30 http://localhost:3000/api/slow' -- node app.js
+# เปิด flame.html
+</code></pre>
+            <p><strong>วิธีอ่าน flame graph (สำคัญ):</strong></p>
+            <ul>
+              <li>X-axis = % เวลา CPU (กว้าง = ใช้เวลามาก)</li>
+              <li>Y-axis = call stack (ลึกลงไป = called by parent)</li>
+              <li>มอง "frame บนสุดที่กว้างมาก" = function ที่ใช้ CPU จริง (ไม่ใช่แค่ called)</li>
+              <li>มอง "plateau กว้าง" — แสดงว่า hot loop / recursive</li>
+            </ul>
+            <p><strong>Bug ที่เจอบ่อย:</strong></p>
+            <ul>
+              <li><code>JSON.parse</code> บน response ใหญ่ — ใช้ stream parser แทน</li>
+              <li>Regex catastrophic backtracking — เปลี่ยน pattern</li>
+              <li>Sync crypto operation — move to worker thread</li>
+              <li>Lodash <code>_.cloneDeep</code> บน object ใหญ่ — ใช้ structuredClone หรือ V8 native</li>
+            </ul>
+            <p><strong>Deliverable:</strong> Blog "Profiling a slow Node.js endpoint" with before/after flame graph + numbers.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="c-2"> C.2 — eBPF &amp; Linux Tracing</h3>
+        <div class="chapter-meta">เวลา: 4-5 สัปดาห์ · Resource: bpftrace one-liners + "BPF Performance Tools" book</div>
+        <ul class="topic-list">
+          <li>eBPF concept: safe programs ใน kernel space</li>
+          <li>bpftrace, bcc, perf — เลือกตัวไหนเมื่อไหร่</li>
+          <li>Tools: tcpconnect, opensnoop, biolatency, profile</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">C.2.1 — เขียน bpftrace script หา "slow syscall"</div>
+          <p>เขียน script ที่: (1) trace syscall ทั้งหมดของ process, (2) วัด latency ของแต่ละ syscall, (3) แสดง histogram ของ syscall ที่ช้าที่สุด 10 อันดับ</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู bpftrace script</button>
+          <div class="answer">
+<pre><code>#!/usr/bin/env bpftrace
+// trace-syscall-latency.bt
+// Usage: sudo bpftrace trace-syscall-latency.bt -c "node app.js"
+//        หรือ: sudo bpftrace trace-syscall-latency.bt -p &lt;PID&gt;
+
+BEGIN {
+  printf("Tracing syscall latency... Ctrl-C to stop\n");
+}
+
+tracepoint:raw_syscalls:sys_enter
+/comm == "node" || pid == $1/
+{
+  @start[tid] = nsecs;
+  @sysname[tid] = args-&gt;id;
+}
+
+tracepoint:raw_syscalls:sys_exit
+/@start[tid]/
+{
+  $delta = nsecs - @start[tid];
+  @latency_ns[ksym(@sysname[tid])] = hist($delta);
+  delete(@start[tid]);
+  delete(@sysname[tid]);
+}
+
+END {
+  print(@latency_ns);
+  clear(@latency_ns);
+}
+</code></pre>
+            <p><strong>Output ตัวอย่าง:</strong></p>
+<pre><code>@latency_ns[__x64_sys_read]:
+[1K, 2K)              42 |@@@@@                |
+[2K, 4K)              89 |@@@@@@@@@@@          |
+[4K, 8K)             203 |@@@@@@@@@@@@@@@@@@@@ |
+[8K, 16K)             21 |@@                   |
+[1M, 2M)               3 |                     |  ← outlier!
+
+@latency_ns[__x64_sys_futex]:    ← ที่นี่ส่วนใหญ่ถ้าใช้ thread/lock
+[16, 32)         5042 |@@@@@@@@@@@@@@@@@@@@ |
+[1M, 2M)            8 |                     |
+</code></pre>
+            <p><strong>Ready-made bpftrace tools (อยู่ใน package <code>bpftrace</code>):</strong></p>
+            <ul>
+              <li><code>biolatency</code> — disk I/O latency histogram</li>
+              <li><code>tcpconnlat</code> — TCP connection establishment latency</li>
+              <li><code>opensnoop</code> — file open events</li>
+              <li><code>execsnoop</code> — process exec</li>
+              <li><code>profile</code> — sample CPU stack ทุก 99 Hz (= flame graph data)</li>
+            </ul>
+            <p><strong>Deliverable:</strong> Personal toolbox ที่ <code>~/bpf/</code> — script ที่ใช้บ่อย 5-10 อัน. แชร์ใน blog.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="c-3"> C.3 — Kernel &amp; Network Tuning</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: ipsysctl-tutorial, "TCP/IP Illustrated"</div>
+        <ul class="topic-list">
+          <li>TCP buffer (rmem/wmem), congestion control (cubic, BBR)</li>
+          <li>File descriptor limits, ephemeral port range</li>
+          <li>NUMA awareness, CPU affinity, IRQ pinning</li>
+          <li>NIC offload (TSO, GRO, RSS)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">C.3.1 — Tune Linux box สำหรับ 100K concurrent TCP connections</div>
+          <p>Setup VM 4 vCPU / 8GB. Open 100K idle TCP connection จาก client → server. Default config จะพังก่อน 30K. ปรับอะไรให้ถึง 100K?</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู tuning checklist</button>
+          <div class="answer">
+<pre><code># /etc/sysctl.d/99-100k-conn.conf
+
+# 1. File descriptors (each conn = 1 fd)
+fs.file-max = 2097152
+# user limit:
+# /etc/security/limits.conf
+# *  soft  nofile  1048576
+# *  hard  nofile  1048576
+
+# 2. TCP socket memory
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 65536 16777216
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+
+# 3. Connection backlog
+net.core.somaxconn = 65535
+net.ipv4.tcp_max_syn_backlog = 65535
+net.core.netdev_max_backlog = 16384
+
+# 4. Ephemeral port range (client side)
+net.ipv4.ip_local_port_range = 10000 65535
+
+# 5. TIME_WAIT cleanup
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
+
+# 6. Connection tracking (ถ้าใช้ iptables/conntrack)
+net.netfilter.nf_conntrack_max = 1048576
+# vm.nf_conntrack_buckets = nf_conntrack_max / 4
+
+# 7. Disable slow defaults (สำหรับ data center, ไม่ใช่ home)
+net.ipv4.tcp_slow_start_after_idle = 0
+
+# Apply
+sudo sysctl -p /etc/sysctl.d/99-100k-conn.conf
+
+# Verify
+ulimit -n              # ต้องเห็น 1048576
+ss -s                  # socket summary
+cat /proc/sys/fs/file-nr   # X Y Z = open / unused / max
+</code></pre>
+            <p><strong>Test setup:</strong></p>
+<pre><code># Client side: tsung หรือ slow_loris
+# Server side: simple TCP echo with epoll
+# วัด: # connection successful, RAM ใช้, CPU usage
+
+# คำนวณ memory
+# 1 conn ≈ 4KB recv + 4KB send buf = 8KB
+# 100K conn ≈ 800MB (just buffers)
+# + struct sock overhead ≈ 3-5KB ต่อ conn
+# Total ≈ 1.2-1.5GB
+</code></pre>
+            <p><strong>Deliverable:</strong> Benchmark report — connection count vs CPU/RAM, ก่อน-หลัง tuning. Blog post.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="c-4"> C.4 — Database Performance Deep Dive</h3>
+        <div class="chapter-meta">เวลา: 4 สัปดาห์ · Resource: "Database Internals" (Petrov), Postgres internals docs</div>
+        <ul class="topic-list">
+          <li>EXPLAIN ANALYZE (BUFFERS) — อ่าน plan ทุก node</li>
+          <li>Index types: B-tree, Hash, GIN, GiST, BRIN — เมื่อไหร่ใช้</li>
+          <li>Query rewrite — push down predicate, eliminate subquery</li>
+          <li>VACUUM, autovacuum, table bloat</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">C.4.1 — Optimize slow query: 2 วินาที → 20ms</div>
+          <p>มี Postgres query ที่ใช้ 2 วินาที. EXPLAIN ANALYZE บอก seq scan + nested loop. ใช้ความรู้: index, query rewrite, partial index, ทำให้ &lt; 50ms</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู workflow</button>
+          <div class="answer">
+<pre><code>-- Slow query (ตัวอย่าง)
+SELECT o.id, o.total, c.email
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.created_at &gt;= '2026-04-01'
+  AND o.status = 'paid'
+ORDER BY o.created_at DESC
+LIMIT 100;
+
+-- Step 1: ดู plan
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT) &lt;query&gt;;
+
+-- จะเห็น:
+--  Limit  (cost=145000.00..145000.25 rows=100)
+--    -&gt;  Sort  (actual time=2100ms..2105ms)
+--          Sort Method: external merge Disk: 320MB   ← ปัญหา!
+--          -&gt;  Hash Join
+--                -&gt;  Seq Scan on orders  (rows=2,500,000)  ← ปัญหา!
+--                      Filter: ((created_at &gt;= '2026-04-01') AND (status='paid'))
+--                      Rows Removed by Filter: 8,500,000
+--                -&gt;  Hash
+--                      -&gt;  Seq Scan on customers ...
+
+-- Step 2: เพิ่ม index ที่ตรง predicate + sort
+CREATE INDEX CONCURRENTLY idx_orders_status_created
+  ON orders (status, created_at DESC)
+  WHERE status = 'paid';   -- partial index
+
+-- Step 3: Re-run EXPLAIN
+--  Limit  (actual time=15..18ms)
+--    -&gt;  Nested Loop
+--          -&gt;  Index Scan using idx_orders_status_created
+--                Index Cond: (status='paid' AND created_at &gt;= '2026-04-01')
+--                Limit: 100
+--          -&gt;  Index Scan using customers_pkey
+
+-- Step 4: ถ้า customers join ยังช้า — covering index
+CREATE INDEX idx_customers_id_email ON customers (id) INCLUDE (email);
+
+-- จะใช้ Index Only Scan → ไม่ต้องอ่าน heap
+</code></pre>
+            <p><strong>Checklist debugging slow query:</strong></p>
+            <ol>
+              <li>EXPLAIN ANALYZE BUFFERS — ตัวเลขจริง ไม่ใช่ EXPLAIN เฉยๆ</li>
+              <li>Sort Method: external = ไม่มี index ที่ตรง ORDER BY</li>
+              <li>Rows Removed by Filter เยอะ = ต้องการ index ที่ filter</li>
+              <li>Heap Fetches มาก = ใช้ INCLUDE (covering index)</li>
+              <li>ตรวจ <code>pg_stat_statements</code> view สำหรับ top slow queries</li>
+            </ol>
+            <p><strong>Deliverable:</strong> Performance audit ของ DB ที่ทำงาน — ระบุ top 10 slow query + plan to fix แต่ละอัน.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="c-5"> C.5 — Capacity Planning at Scale</h3>
+        <div class="chapter-meta">เวลา: 2 สัปดาห์ · Resource: "Site Reliability Engineering" Ch 18-20</div>
+        <ul class="topic-list">
+          <li>Little's Law: L = λ × W (concurrency = arrival rate × latency)</li>
+          <li>Headroom: ทำไม 70% utilization คือ "เต็ม" จริง</li>
+          <li>Load shedding patterns (rate limit, circuit breaker, queue)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">C.5.1 — Capacity model สำหรับ 100K RPS service</div>
+          <p>ให้ design API ที่รับ 100K RPS sustained, P99 &lt; 200ms. คำนวณ: pod ต้อง ก%ของ CPU, RAM, DB connection pool, cache hit ratio ขั้นต่ำ. แสดงสมการ ไม่ใช่ guess</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู model</button>
+          <div class="answer">
+<pre><code># Assumptions ที่ต้องวัด/รู้
+- Per-request latency (median): 50ms
+- Per-request CPU: 5ms (compute time)
+- Per-request memory: 2MB (peak working set)
+- Per-request DB call: 1 query, 8ms each
+- Cache hit ratio: 80% (validate ด้วย load test)
+
+# Application tier (Little's Law)
+Concurrency = RPS × latency
+            = 100,000 × 0.050s
+            = 5,000 concurrent requests
+
+# CPU capacity
+Total CPU-seconds/sec = 100,000 × 0.005s = 500 CPU-seconds/sec
+ที่ 70% util target → 500 / 0.7 = 714 vCPU
+ถ้า node 16 vCPU → 714 / 16 = 45 nodes
+
+# Memory
+Per pod ≈ 5,000/pod_count × 2MB working set + base
+ถ้า 100 pod → 100MB + 200MB base ≈ 300MB/pod
+Total ≈ 30GB (อยู่ใน 45 node × 8GB ได้สบาย)
+
+# DB capacity (cache miss)
+DB QPS = 100K × (1 - 0.80) = 20,000 DB queries/sec
+DB response time avg 8ms → concurrency = 20,000 × 0.008 = 160 conn
+ใส่ buffer 2x → pool = 320 conn
+แบ่ง 45 pod → 8 conn/pod (with PgBouncer)
+
+# Cache (Redis)
+Cache QPS = 100K (read every request)
+Network bandwidth: each cache resp 1KB → 100MB/s = 800Mbps
+Need 1Gbps NIC (Redis Cluster ถ้าเกิน)
+
+# Headroom &amp; safety
+- Add 30% over computed = ป้องกัน traffic spike
+- Multi-AZ → คูณ 1.5 (ทน 1 AZ ตาย)
+- Final: ~70 nodes, 500 DB conn pool, 3 Redis shards
+</code></pre>
+            <p><strong>Critical insight:</strong> ตัวเลขที่คุณ "เดา" มักผิด 5-10x. ต้องวัดจริงจาก load test (k6, autocannon) ที่ ramp ขึ้นจน 100K RPS แล้วดูว่า bottleneck คืออะไรจริง — มักจะเป็น DB pool หรือ cache evict ก่อน CPU.</p>
+            <p><strong>Deliverable:</strong> Capacity planning doc สำหรับ service ที่ทำงาน — มี graph, formula, assumption ที่ documented.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>Capstone — Track C</strong>
+        <p>(1) Take real slow service ที่ทำงาน → profile → optimize → measure (before/after) → blog post, (2) สร้าง personal eBPF/perf toolbox ที่ใช้ใน incident จริง, (3) ทำ capacity planning doc ที่ leadership ใช้ตัดสินใจ infra cost</p>
+      </div>
+    </section>
+
+    <!-- ============ TRACK D: PLATFORM ENGINEERING ============ -->
+    <section class="track d" id="track-d">
+      <h2>Track D — Platform Engineering Deep <span class="track-badge d">6 MONTHS</span></h2>
+      <div class="track-meta">เหมาะกับ: คนที่ชอบ "ช่วย engineer คนอื่น" มากกว่าทำ end-user feature · เน้น API design, abstraction, developer experience</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> หลังจบ track นี้ คุณจะสร้าง <em>Internal Developer Platform (IDP)</em> ที่ engineer คนอื่นใช้ deploy/observe/debug service ของตัวเองได้โดยไม่ต้องถามคุณ. คุณจะเป็น "force multiplier" — engineer 1 คนทำให้ทีม 50 คนเร็วขึ้น 30%.
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="d-1"> D.1 — Platform Philosophy &amp; Backstage</h3>
+        <div class="chapter-meta">เวลา: 2-3 สัปดาห์ · Resource: "Team Topologies" book + Backstage docs</div>
+        <ul class="topic-list">
+          <li>"Platform as a product" mindset — engineer คนอื่นคือลูกค้า</li>
+          <li>Cognitive load — ลด, ไม่ใช่เพิ่ม</li>
+          <li>Golden path — หนึ่งทางที่ "ง่ายและถูก" เสมอ</li>
+          <li>Backstage — Spotify's internal portal (open source)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">D.1.1 — Setup Backstage + register 3 service ของทีม</div>
+          <p>(1) Run Backstage locally, (2) Register 3 service ของทีมตัวเอง (catalog-info.yaml), (3) Show owner, runbook link, dashboard link, on-call ของแต่ละ service ในที่เดียว</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู setup + sample</button>
+          <div class="answer">
+<pre><code># Bootstrap Backstage
+npx @backstage/create-app@latest
+cd my-backstage-app
+yarn dev   # http://localhost:3000
+
+# catalog-info.yaml ใน repo ของแต่ละ service
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: order-service
+  description: Handles checkout and order lifecycle
+  annotations:
+    github.com/project-slug: yourorg/order-service
+    grafana/dashboard-selector: 'tag = "order-service"'
+    pagerduty.com/service-id: PXXXXXX
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://wiki.example.com/runbook/order
+      title: Runbook
+      icon: docs
+    - url: https://grafana.example.com/d/order
+      title: Dashboard
+      icon: dashboard
+spec:
+  type: service
+  lifecycle: production
+  owner: team-checkout
+  system: ecommerce
+  dependsOn:
+    - resource:postgres-orders
+    - resource:redis-cache
+    - component:auth-service
+</code></pre>
+            <p><strong>หลังเริ่มต้น เพิ่ม plugins:</strong></p>
+            <ul>
+              <li><code>@backstage/plugin-kubernetes</code> — แสดง K8s status ของแต่ละ service</li>
+              <li><code>@backstage/plugin-grafana</code> — embed dashboard</li>
+              <li><code>@roadiehq/backstage-plugin-prometheus</code> — alerts</li>
+              <li><code>@backstage/plugin-techdocs</code> — Markdown docs ใน repo render เป็น site</li>
+            </ul>
+            <p><strong>Deliverable:</strong> Backstage instance ที่ run จริงในทีม + ทุก service มี catalog entry. Adoption metric: % service ที่ register.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="d-2"> D.2 — Abstraction Layers (IaC Components)</h3>
+        <div class="chapter-meta">เวลา: 4 สัปดาห์ · Resource: Pulumi ComponentResource / Terraform module patterns</div>
+        <ul class="topic-list">
+          <li>Encapsulation: ซ่อน complexity, expose intent</li>
+          <li>"Opinionated default" vs "escape hatch"</li>
+          <li>Versioning + breaking change strategy</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">D.2.1 — สร้าง <code>StandardService</code> Pulumi component</div>
+          <p>เขียน ComponentResource ที่: dev เพียงเรียก <code>new StandardService({ name, image, port })</code> → ได้ Deployment + Service + HPA + ServiceMonitor + NetworkPolicy + PodDisruptionBudget ครบ พร้อม security defaults</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู component skeleton</button>
+          <div class="answer">
+<pre><code>// platform/standard-service.ts
+import * as pulumi from "@pulumi/pulumi";
+import * as k8s from "@pulumi/kubernetes";
+
+export interface StandardServiceArgs {
+  name: string;
+  image: string;
+  port: number;
+  // optional with sensible defaults
+  replicas?: number;             // default 3
+  cpu?: string;                  // default "100m"
+  memory?: string;               // default "256Mi"
+  env?: Record&lt;string, string&gt;;
+  ingressHost?: string;
+  // escape hatch for power users
+  podSpecPatch?: object;
+}
+
+export class StandardService extends pulumi.ComponentResource {
+  readonly deployment: k8s.apps.v1.Deployment;
+  readonly service: k8s.core.v1.Service;
+  readonly serviceMonitor: k8s.apiextensions.CustomResource;
+  readonly hpa: k8s.autoscaling.v2.HorizontalPodAutoscaler;
+  readonly pdb: k8s.policy.v1.PodDisruptionBudget;
+  readonly netPolicy: k8s.networking.v1.NetworkPolicy;
+
+  constructor(name: string, args: StandardServiceArgs, opts?: pulumi.ComponentResourceOptions) {
+    super("platform:StandardService", name, {}, opts);
+
+    const labels = { app: args.name, "managed-by": "platform" };
+
+    // Deployment with security defaults
+    this.deployment = new k8s.apps.v1.Deployment(args.name, {
+      metadata: { name: args.name, labels },
+      spec: {
+        replicas: args.replicas ?? 3,
+        selector: { matchLabels: labels },
+        template: {
+          metadata: {
+            labels,
+            annotations: {
+              "prometheus.io/scrape": "true",
+              "prometheus.io/port": "9090",
+            }
+          },
+          spec: {
+            // ✅ security defaults built-in
+            securityContext: {
+              runAsNonRoot: true,
+              runAsUser: 1000,
+              fsGroup: 2000,
+              seccompProfile: { type: "RuntimeDefault" },
+            },
+            containers: [{
+              name: args.name,
+              image: args.image,
+              ports: [{ containerPort: args.port }],
+              env: Object.entries(args.env ?? {}).map(([k, v]) =&gt; ({ name: k, value: v })),
+              resources: {
+                requests: { cpu: args.cpu ?? "100m", memory: args.memory ?? "256Mi" },
+                limits:   { cpu: args.cpu ?? "500m", memory: args.memory ?? "512Mi" },
+              },
+              securityContext: {
+                allowPrivilegeEscalation: false,
+                readOnlyRootFilesystem: true,
+                capabilities: { drop: ["ALL"] },
+              },
+              livenessProbe: { httpGet: { path: "/health", port: args.port }, initialDelaySeconds: 10 },
+              readinessProbe: { httpGet: { path: "/ready", port: args.port }, initialDelaySeconds: 2 },
+            }],
+          },
+        },
+      },
+    }, { parent: this });
+
+    this.service = new k8s.core.v1.Service(args.name, { /* ... */ }, { parent: this });
+    this.hpa = new k8s.autoscaling.v2.HorizontalPodAutoscaler(args.name, { /* ... */ }, { parent: this });
+    this.pdb = new k8s.policy.v1.PodDisruptionBudget(args.name, { /* maxUnavailable: 1 */ }, { parent: this });
+    this.netPolicy = new k8s.networking.v1.NetworkPolicy(args.name, { /* deny by default */ }, { parent: this });
+    this.serviceMonitor = new k8s.apiextensions.CustomResource(args.name, { /* Prometheus Operator CRD */ }, { parent: this });
+
+    this.registerOutputs({});
+  }
+}
+
+// User code (3 บรรทัด แทน 200)
+new StandardService("payment", {
+  name: "payment",
+  image: "registry.example.com/payment:v1.2",
+  port: 8080,
+  ingressHost: "payment.example.com",
+});
+</code></pre>
+            <p><strong>กฎ abstraction ที่ดี:</strong></p>
+            <ul>
+              <li>80% use case: ไม่ต้องระบุอะไรเพิ่ม (defaults ดี)</li>
+              <li>15% use case: override field เดียว</li>
+              <li>5% edge case: escape hatch (<code>podSpecPatch</code>)</li>
+              <li>เวอร์ชัน semantic — breaking change = major bump + migration guide</li>
+            </ul>
+            <p><strong>Deliverable:</strong> Internal package (npm/Go module) + adoption guide + 3 service migrate ใช้ component นี้.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="d-3"> D.3 — Self-Service Templates &amp; Scaffolding</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: Backstage Software Templates, copier, cookiecutter</div>
+        <ul class="topic-list">
+          <li>"Create new service" ใน 5 นาที (ไม่ใช่ 5 วัน)</li>
+          <li>Template ที่ generate: repo, CI, K8s manifest, monitoring, alert</li>
+          <li>Update mechanism — service เก่า pull update template ได้</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">D.3.1 — Backstage Template "New Microservice"</div>
+          <p>เขียน Backstage software template ที่ปุ่ม "Create" จะ: (1) สร้าง GitLab repo ใหม่จาก template, (2) inject service name + owner, (3) commit baseline code (Express skeleton + Dockerfile + .gitlab-ci.yml + catalog-info.yaml), (4) register ใน catalog</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู template structure</button>
+          <div class="answer">
+<pre><code># template.yaml
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: nodejs-microservice
+  title: Node.js Microservice
+  description: Production-ready Node.js service with full observability
+spec:
+  type: service
+  parameters:
+    - title: Identification
+      required: [name, owner]
+      properties:
+        name: { type: string, pattern: '^[a-z0-9-]+$' }
+        description: { type: string }
+        owner:
+          type: string
+          ui:field: OwnerPicker
+          ui:options: { allowedKinds: [Group] }
+    - title: Configuration
+      properties:
+        port: { type: integer, default: 8080 }
+        useDatabase: { type: boolean, default: false }
+
+  steps:
+    - id: fetch
+      name: Fetch base template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          port: ${{ parameters.port }}
+          useDatabase: ${{ parameters.useDatabase }}
+
+    - id: publish
+      name: Publish to GitLab
+      action: publish:gitlab
+      input:
+        repoUrl: gitlab.example.com?owner=services&amp;repo=${{ parameters.name }}
+        defaultBranch: main
+
+    - id: register
+      name: Register in catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
+</code></pre>
+            <p><strong>skeleton/ structure:</strong></p>
+<pre><code>skeleton/
+├── catalog-info.yaml       # ${{ values.name }}, ${{ values.owner }}
+├── README.md
+├── Dockerfile              # multi-stage, non-root
+├── .gitlab-ci.yml          # build + scan + deploy
+├── .gitignore
+├── package.json            # service name = ${{ values.name }}
+├── src/
+│   ├── server.js           # Express skeleton with /health, /ready, /metrics
+│   ├── routes/
+│   │   └── ${{ values.name }}.js
+│   └── otel.js             # OpenTelemetry setup
+├── k8s/
+│   └── service.ts          # Pulumi using StandardService component (D.2)
+└── docs/
+    └── runbook.md
+</code></pre>
+            <p><strong>Time to first deploy:</strong> Click "Create" → 90 วินาทีต่อมามี repo + CI run + service deployed บน staging.</p>
+            <p><strong>Deliverable:</strong> Template ที่ทีมใช้สร้าง service จริง 5+ ตัว. วัด lead time ก่อน-หลัง.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="d-4"> D.4 — Internal API Gateways &amp; Service Catalogs</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: Envoy / Istio / Kong</div>
+        <ul class="topic-list">
+          <li>Cross-cutting concerns: auth, rate limit, retry, observability</li>
+          <li>Schema registry: protobuf / OpenAPI</li>
+          <li>API discoverability: who calls who</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">D.4.1 — สร้าง "Service Mesh standard" สำหรับทีม</div>
+          <p>Setup Istio ใน cluster. กำหนด: (1) mTLS strict ทุก namespace, (2) default rate limit 1000 req/s ต่อ service, (3) auto-retry 3x สำหรับ 5xx, (4) request log มี trace ID, (5) generate dependency map (who calls who)</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู config &amp; tooling</button>
+          <div class="answer">
+<pre><code># 1. mTLS strict (cluster-wide PeerAuthentication)
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: istio-system
+spec:
+  mtls: { mode: STRICT }
+
+# 2. Default rate limit (Envoy filter)
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: default-rate-limit
+  namespace: istio-system
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match: { context: SIDECAR_INBOUND }
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.http.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+            type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+            value:
+              stat_prefix: http_local_rate_limiter
+              token_bucket:
+                max_tokens: 1000
+                tokens_per_fill: 1000
+                fill_interval: 1s
+
+# 3. Auto-retry (DestinationRule per service or global)
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: default-retry
+spec:
+  hosts: ['*.svc.cluster.local']
+  http:
+    - retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: 5xx,reset,connect-failure
+
+# 4. Trace ID injection — Istio inject headers อัตโนมัติ
+#    ต้องใช้ใน app: รับ x-request-id, x-b3-traceid, x-b3-spanid
+#    log line: { traceId, spanId, ... }
+
+# 5. Dependency map
+# Kiali (รวมกับ Istio) → Graph view
+# หรือ: query Prometheus
+sum by (source_workload, destination_service) (
+  rate(istio_requests_total[5m])
+)
+</code></pre>
+            <p><strong>Deliverable:</strong> Service mesh configured + dashboard "Who calls who" + onboarding doc สำหรับ dev. Adoption: % service ที่ใช้ mesh.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="d-5"> D.5 — Measuring Platform Success</h3>
+        <div class="chapter-meta">เวลา: 2 สัปดาห์ · Resource: DORA report, "Accelerate" book</div>
+        <ul class="topic-list">
+          <li>DORA 4 metrics: deploy freq, lead time, MTTR, change fail rate</li>
+          <li>Adoption metrics: % team ใช้ platform / # service registered</li>
+          <li>NPS ของ engineer (developer experience survey)</li>
+          <li>Cost per service (FinOps angle)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">D.5.1 — สร้าง "Platform Health Dashboard"</div>
+          <p>Grafana dashboard ที่แสดง: (1) DORA 4 metrics รายเดือน, (2) จำนวน service ที่ register ใน catalog (trend), (3) จำนวน "support ticket" ที่ทีม platform ได้รับ (target: ลดลง = self-service ดี), (4) deploy time median</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู metrics + queries</button>
+          <div class="answer">
+<pre><code># Source ของ metric (จะ scrape เข้า Prometheus)
+
+# 1. Deploy frequency = count of deploys per day
+#    Source: GitLab CI events → push ไป Prometheus pushgateway
+sum by (service) (increase(gitlab_pipeline_deploy_success_total[1d]))
+
+# 2. Lead time = commit timestamp → deploy timestamp
+histogram_quantile(0.5,
+  sum by (le) (rate(deploy_lead_time_seconds_bucket[7d]))
+)
+
+# 3. MTTR = (resolved_at - alert_started_at) per incident
+#    Source: PagerDuty / Opsgenie webhook
+avg_over_time(incident_resolution_seconds[30d])
+
+# 4. Change failure rate = failed deploys / total deploys
+sum(rate(deploy_failed_total[7d])) / sum(rate(deploy_total[7d]))
+
+# 5. Catalog adoption
+count(catalog_entity_total{kind="Component"})
+
+# 6. Support load (Slack mentions, Jira tickets)
+sum(rate(slack_help_messages_total{channel="#platform-help"}[7d]))
+</code></pre>
+            <p><strong>DORA benchmarks (จาก 2023 report):</strong></p>
+            <table>
+              <tr><th>Tier</th><th>Deploy freq</th><th>Lead time</th><th>MTTR</th><th>Change fail</th></tr>
+              <tr><td>Elite</td><td>On demand</td><td>&lt; 1 hr</td><td>&lt; 1 hr</td><td>0-15%</td></tr>
+              <tr><td>High</td><td>Daily-weekly</td><td>1 day-1 wk</td><td>&lt; 1 day</td><td>16-30%</td></tr>
+              <tr><td>Medium</td><td>Weekly-monthly</td><td>1 wk-1 mo</td><td>1 day-1 wk</td><td>16-30%</td></tr>
+              <tr><td>Low</td><td>Monthly+</td><td>1+ month</td><td>1+ wk</td><td>16-30%</td></tr>
+            </table>
+            <p><strong>Deliverable:</strong> Dashboard live + monthly review with leadership. Goal: เลื่อน team จาก Medium → High ใน 6 เดือน.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>Capstone — Track D</strong>
+        <p>Launch IDP จริงที่บริษัท. 3 metric ที่ต้องวัดได้: (1) lead time ลด ≥ 30%, (2) ≥ 80% service register ใน catalog, (3) developer NPS ≥ 40. นำเสนอผลงานต่อ leadership ภายใน 6 เดือน.</p>
+      </div>
+    </section>
+
+    <!-- ============ TRACK E: SECURITY DEPTH ============ -->
+    <section class="track e" id="track-e">
+      <h2>Track E — Security Depth <span class="track-badge e">5 MONTHS</span></h2>
+      <div class="track-meta">เหมาะกับ: คนที่คิดเชิงป้องกัน + อยาก "เห็นเหมือน attacker" · เน้น threat modeling, supply chain, detection</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> หลังจบ track นี้ คุณจะ design ระบบใหม่โดยมี security เป็น first-class concern (ไม่ใช่ "เพิ่มทีหลัง"), ทำ threat model ให้ทีม, และตอบ security audit ได้โดยไม่ต้องจ้าง consultant. คุณคือ DevSecOps จริงๆ — ไม่ใช่ DevOps ที่เพิ่ม "Sec" ในชื่อ.
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="e-1"> E.1 — Threat Modeling (STRIDE / PASTA)</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: "Threat Modeling: Designing for Security" (Shostack)</div>
+        <ul class="topic-list">
+          <li>STRIDE: Spoofing, Tampering, Repudiation, Info disclosure, DoS, Elevation</li>
+          <li>Trust boundaries — เส้นที่ data ข้าม trust level</li>
+          <li>Data flow diagram (DFD) → threat → mitigation</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">E.1.1 — Full STRIDE threat model สำหรับ service จริง</div>
+          <p>เลือก service ที่ทำงาน. วาด DFD level 0-1. ใส่ trust boundary. List threat ทุก data flow (STRIDE 6 หมวด) → mitigation. เขียนเป็น living document</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู template</button>
+          <div class="answer">
+<pre><code># Threat Model: Order Service v1.2 (2026-04)
+Author: ____  · Last reviewed: ____  · Next review: 2026-10
+
+## 1. Architecture
+[Insert DFD here]
+- Trust boundaries:
+  TB-1: Internet ↔ ALB
+  TB-2: ALB ↔ App pod (mTLS)
+  TB-3: App pod ↔ RDS (VPC + IAM)
+  TB-4: App pod ↔ External payment API (TLS + API key)
+
+## 2. Assets &amp; Sensitivity
+| Asset | Classification | Where stored |
+|---|---|---|
+| Customer PII (email, name, address) | Confidential | RDS orders/customers table |
+| Payment token | Confidential | Vault (not in our DB) |
+| Order metadata | Internal | RDS, Redis cache |
+| Audit log | Internal | LTS (Huawei) |
+
+## 3. Threats (STRIDE per data flow)
+
+### Flow: User → ALB → App (login)
+| Threat | Type | Mitigation | Status |
+|---|---|---|---|
+| Credential stuffing | S | Rate limit 5/min/IP, captcha after 3 fails | ✅ |
+| Replay token | S | JWT exp=15min, refresh token rotation | ✅ |
+| Bypass MFA | E | MFA check enforced server-side, not client | ✅ |
+| Brute force | S | Account lockout 1hr after 10 fails | ⚠️ Lockout DoS — switch to backoff |
+
+### Flow: App → RDS (write order)
+| Threat | Type | Mitigation | Status |
+|---|---|---|---|
+| SQL injection | T | Prepared statements (Prisma ORM) | ✅ |
+| Read other user's order | I | Row-level filter in query: WHERE user_id = $auth_user | ✅ |
+| Modify order amount post-creation | T | Audit log, immutable column trigger | ❌ Missing — TODO |
+| Delete order via API | T | Endpoint requires admin role | ✅ |
+
+### Flow: App → Payment API (external)
+| Threat | Type | Mitigation | Status |
+|---|---|---|---|
+| MITM | T | TLS 1.3 + cert pinning | ✅ |
+| Leaked API key | I | Key in CSMS, rotate quarterly, IP allowlist on provider | ✅ |
+| Replay payment | T | Idempotency-Key header, 24hr dedup | ✅ |
+
+## 4. Action Items
+- [ ] Add audit trigger on orders table (E.1 owner: @backend, due 2026-05-15)
+- [ ] Implement progressive backoff vs lockout (owner: @sec, due 2026-05-30)
+- [ ] Pen test ก่อน v1.3 release (owner: @lead)
+
+## 5. Re-assessment Triggers
+- Major architecture change (e.g., add new external service)
+- After every CVE in dependency
+- Quarterly review
+</code></pre>
+            <p><strong>Tools:</strong> OWASP Threat Dragon (free, web-based), Microsoft Threat Modeling Tool, IriusRisk (commercial).</p>
+            <p><strong>Deliverable:</strong> Threat model docs ของทุก critical service + integrate into PR review (PR ที่เปลี่ยน architecture ต้อง update threat model).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="e-2"> E.2 — Supply Chain Security (SLSA)</h3>
+        <div class="chapter-meta">เวลา: 4 สัปดาห์ · Resource: SLSA framework (slsa.dev), Sigstore docs</div>
+        <ul class="topic-list">
+          <li>SLSA levels 1-4 — เป้าหมาย level 2-3 สำหรับธุรกิจปกติ</li>
+          <li>SBOM (Software Bill of Materials) — รู้ว่ามี library อะไรใน image</li>
+          <li>Provenance — proof ว่า build จาก commit นั้นจริง</li>
+          <li>Image signing (cosign) + verification (policy controller)</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">E.2.1 — Implement SLSA Level 2 ใน pipeline</div>
+          <p>เพิ่มใน GitLab CI: (1) generate SBOM (syft), (2) scan vuln (grype หรือ trivy), (3) sign image (cosign), (4) attest provenance (in-toto), (5) K8s policy ที่ verify signature ก่อน admit pod</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู pipeline + policy</button>
+          <div class="answer">
+<pre><code># .gitlab-ci.yml (เพิ่มจาก Stage 1)
+stages: [..., sbom, sign, attest]
+
+sbom:
+  stage: sbom
+  image: anchore/syft:latest
+  script:
+    - syft $IMAGE -o spdx-json &gt; sbom.spdx.json
+    - syft $IMAGE -o cyclonedx-json &gt; sbom.cdx.json
+  artifacts:
+    paths: [sbom.*.json]
+
+sign:
+  stage: sign
+  image: bitnami/cosign:latest
+  variables:
+    COSIGN_EXPERIMENTAL: "1"        # OIDC keyless signing
+  script:
+    # Keyless: uses OIDC token from GitLab CI
+    - cosign sign --yes $IMAGE_DIGEST
+    # Or with key
+    # echo $COSIGN_KEY | base64 -d &gt; cosign.key
+    # cosign sign --key cosign.key $IMAGE_DIGEST
+
+attest:
+  stage: attest
+  image: bitnami/cosign:latest
+  script:
+    # Provenance: who built it, from what commit, when
+    - cosign attest --predicate sbom.spdx.json --type spdx $IMAGE_DIGEST
+    - |
+      cat &gt; provenance.json &lt;&lt;EOF
+      {
+        "buildType": "https://gitlab.com/CI/v1",
+        "builder": { "id": "$CI_RUNNER_DESCRIPTION" },
+        "invocation": {
+          "configSource": {
+            "uri": "git+$CI_PROJECT_URL@$CI_COMMIT_SHA",
+            "digest": { "sha1": "$CI_COMMIT_SHA" }
+          }
+        },
+        "metadata": {
+          "buildStartedOn": "$CI_PIPELINE_CREATED_AT",
+          "buildFinishedOn": "$(date -Iseconds)",
+          "completeness": { "parameters": true, "environment": true, "materials": true },
+          "reproducible": false
+        }
+      }
+      EOF
+    - cosign attest --predicate provenance.json --type slsaprovenance $IMAGE_DIGEST
+</code></pre>
+<pre><code># K8s Sigstore Policy Controller — verify signature before pod admission
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: require-signed-images
+spec:
+  images:
+    - glob: "registry.example.com/**"
+  authorities:
+    - keyless:
+        url: https://fulcio.sigstore.dev
+        identities:
+          - issuer: https://gitlab.com
+            subject: https://gitlab.com/yourorg/*
+  policy:
+    type: cue
+    data: |
+      predicateType: "https://slsa.dev/provenance/v0.2"
+      predicate: {
+        builder: { id: "https://gitlab.com/CI/v1" }
+      }
+</code></pre>
+            <p><strong>Deliverable:</strong> SLSA Level 2 achieved (verified by external audit checklist). Document evidence link in security wiki.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="e-3"> E.3 — Workload Identity (SPIFFE/SPIRE)</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: spiffe.io docs, SPIRE quickstart</div>
+        <ul class="topic-list">
+          <li>SPIFFE ID = identity ของ workload (URI form: <code>spiffe://example.com/payment</code>)</li>
+          <li>SVID = X.509 cert ที่ encode SPIFFE ID (auto-rotate)</li>
+          <li>Workload attestation — node + container property</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">E.3.1 — Replace static API key ระหว่าง 2 service ด้วย SPIFFE</div>
+          <p>2 service ที่คุยกันด้วย API key (HMAC). ติดตั้ง SPIRE บน kind cluster. configure ทั้ง 2 service ใช้ SVID. Verify ว่า rotate cert ทุก 1 ชั่วโมงโดยไม่ต้อง restart pod</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู setup steps</button>
+          <div class="answer">
+<pre><code># 1. Install SPIRE on kind
+helm install spire spiffe/spire --namespace spire --create-namespace
+
+# 2. Register workload
+kubectl exec -n spire spire-server-0 -- \
+  /opt/spire/bin/spire-server entry create \
+    -spiffeID spiffe://example.com/payment \
+    -parentID spiffe://example.com/spire-agent \
+    -selector k8s:ns:default \
+    -selector k8s:sa:payment \
+    -selector k8s:pod-label:app:payment
+
+# 3. Pod injects spiffe-agent socket
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: payment }
+spec:
+  template:
+    spec:
+      serviceAccountName: payment
+      containers:
+        - name: payment
+          image: payment:1.0
+          volumeMounts:
+            - name: spiffe-workload-api
+              mountPath: /spiffe-workload-api
+              readOnly: true
+      volumes:
+        - name: spiffe-workload-api
+          csi:
+            driver: csi.spiffe.io
+            readOnly: true
+
+# 4. App code (Go example)
+import "github.com/spiffe/go-spiffe/v2/workloadapi"
+
+ctx := context.Background()
+source, _ := workloadapi.NewX509Source(ctx)
+defer source.Close()
+
+// auto-rotated mTLS client
+tlsConfig := tlsconfig.MTLSClientConfig(source, source,
+  tlsconfig.AuthorizeID(spiffeid.RequireFromString("spiffe://example.com/orders")))
+
+client := &amp;http.Client{Transport: &amp;http.Transport{TLSClientConfig: tlsConfig}}
+resp, _ := client.Get("https://orders.svc/api/lookup")
+// Cert behind the scenes refreshes every ~30 min, no restart needed
+</code></pre>
+            <p><strong>Why SPIFFE &gt; static key:</strong></p>
+            <ul>
+              <li>No secret to rotate manually</li>
+              <li>Identity tied to workload identity (impossible to copy out and use elsewhere)</li>
+              <li>Audit log shows exact workload, not just "key #42"</li>
+            </ul>
+            <p><strong>Deliverable:</strong> SPIRE running ใน production-ish env. ≥ 2 service migrated. Document migration playbook for other services.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="e-4"> E.4 — Detection &amp; Response (Falco / SIEM)</h3>
+        <div class="chapter-meta">เวลา: 3 สัปดาห์ · Resource: Falco rules library, MITRE ATT&amp;CK matrix</div>
+        <ul class="topic-list">
+          <li>Detection rule: write SIGMA / Falco rule</li>
+          <li>SOAR (Security Orchestration, Automation, Response)</li>
+          <li>MITRE ATT&amp;CK — categorize threats</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">E.4.1 — เขียน Falco rule + alert pipeline</div>
+          <p>ติดตั้ง Falco บน K8s. เขียน custom rule detect: (1) shell spawned in container, (2) sensitive file read (e.g., /etc/shadow), (3) outbound conn to non-allowlist IP. Alert ไป Slack + ticket auto-create</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู rule + integration</button>
+          <div class="answer">
+<pre><code># Install Falco (DaemonSet)
+helm install falco falcosecurity/falco -n falco --create-namespace
+
+# Custom rule: /etc/falco/falco_rules.local.yaml
+- rule: Suspicious Shell in Container
+  desc: Shell spawned inside a production container
+  condition: &gt;
+    spawned_process and container and shell_procs
+    and not k8s_container_starts_with(c, "debug-")
+  output: &gt;
+    Shell spawned in container
+    (user=%user.name container=%container.name image=%container.image.repository
+     proc=%proc.name pid=%proc.pid)
+  priority: WARNING
+  tags: [container, shell, mitre_execution]
+
+- rule: Read of Sensitive Credential File
+  desc: Process read /etc/shadow or kube secrets path
+  condition: &gt;
+    open_read and (fd.name=/etc/shadow or fd.name startswith /var/run/secrets/)
+    and not proc.name in (sshd, vault, agent)
+  output: &gt;
+    Sensitive file read
+    (user=%user.name file=%fd.name proc=%proc.cmdline container=%container.name)
+  priority: CRITICAL
+  tags: [filesystem, credentials, mitre_credential_access]
+
+- rule: Outbound Connection to Non-Allowlist
+  desc: Container made connection to IP outside allowed list
+  condition: &gt;
+    outbound and container
+    and not fd.sip in (allowed_outbound_ips)
+    and not k8s_namespace in (egress_allowed_namespaces)
+  output: &gt;
+    Suspicious outbound: %container.name -&gt; %fd.sip:%fd.sport
+    (image=%container.image.repository)
+  priority: WARNING
+  tags: [network, mitre_command_and_control]
+</code></pre>
+<pre><code># Alert pipeline: Falco → Falcosidekick → Slack + Jira
+# helm upgrade falco --set falcosidekick.enabled=true \
+#   --set falcosidekick.config.slack.webhookurl=$SLACK_HOOK \
+#   --set falcosidekick.config.jira.url=$JIRA_URL \
+#   --set falcosidekick.config.jira.user=$JIRA_USER
+
+# Falcosidekick auto-creates Jira ticket for CRITICAL findings
+</code></pre>
+            <p><strong>Deliverable:</strong> Detection rules มี ≥ 10 อันที่ tuned (low false positive). Mean Time To Detect (MTTD) baseline + improvement plan.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="e-5"> E.5 — Offensive Awareness (Defender's Mindset)</h3>
+        <div class="chapter-meta">เวลา: ตลอด track · Resource: TryHackMe, HackTheBox, OWASP WebGoat (legal!)</div>
+        <ul class="topic-list">
+          <li>"Think like attacker" — understand exploit primitives</li>
+          <li>Lab on TryHackMe — เข้า Junior Penetration Tester path</li>
+          <li>Read CVE writeups, watch DEF CON talks</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">E.5.1 — Complete TryHackMe "Web Fundamentals" + write defensive PR</div>
+          <p>เรียน path "Web Fundamentals" บน TryHackMe (~30 ชม.). เลือก vuln type ที่เข้าใจดีที่สุด. หา code ในระบบที่ทำงาน → เขียน PR แก้ + เขียน blog "How I found and fixed X in our codebase"</p>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู approach</button>
+          <div class="answer">
+            <p><strong>Why offense-defense ต้องคู่กัน:</strong> ถ้าไม่เคยลอง exploit จริง คุณ <em>ไม่</em> รู้ว่าจะป้องกันลึกแค่ไหน. ตัวอย่าง: รู้แค่ "SQL injection อันตราย" ≠ รู้ว่า WAF ตัวไหนบายปาส UNION-based ได้</p>
+            <p><strong>Legal path (สำคัญ — อย่าทำผิดกฎหมาย):</strong></p>
+            <ul>
+              <li>TryHackMe / HackTheBox / OverTheWire — sandbox legal</li>
+              <li>OWASP WebGoat / DVWA — install บน laptop ตัวเอง</li>
+              <li>HackerOne / Bugcrowd — ลงทะเบียน bug bounty (มี scope ชัดเจน)</li>
+              <li>ห้าม: ทดสอบบนระบบที่ไม่ใช่ของตัวเอง โดยไม่มี written permission</li>
+            </ul>
+            <p><strong>Recommend learning order:</strong></p>
+            <ol>
+              <li>Web (XSS, CSRF, SQLi, SSRF) — ใกล้เคียงงานจริงสุด</li>
+              <li>Authentication / Authorization (JWT attacks, OAuth flaws)</li>
+              <li>Container escape (CVE-2019-5736, etc.)</li>
+              <li>Cloud misconfig (Pacu, ScoutSuite — สำหรับ AWS; PowerHuawei สำหรับ Huawei)</li>
+            </ol>
+            <p><strong>Deliverable:</strong> 1 defensive PR + 1 blog post + 5 active TryHackMe rooms completed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>Capstone — Track E</strong>
+        <p>(1) Lead security review ของ 1 product feature ก่อน launch — present finding ต่อ leadership, (2) SLSA Level 2+ achieved with audit evidence, (3) ≥ 1 defensive contribution (PR, advisory, blog) ที่ public, (4) ทำ tabletop "data breach response" กับ legal + comms team.</p>
+      </div>
+    </section>
+
+    <!-- ============ REAL STAKES ============ -->
+    <section class="track" id="real-stakes" style="border-top-color: var(--accent);">
+      <h2 style="color: var(--accent);">⚡ Real Stakes Path — เพราะ exercise อย่างเดียวไม่พอ</h2>
+      <div class="track-meta">ใช้คู่ขนานกับ track ใดๆ · ไม่ใช่ "เรียน" แต่คือ "ทำของจริง"</div>
+
+      <div class="track-goal">
+        <strong>เป้าหมาย:</strong> ทำให้ความรู้ใน track กลายเป็น <em>real-world signal</em> — สิ่งที่ recruiter, peer, community เห็นและพูดถึง. Roadmap ปลอมๆ ให้คุณรู้, real stakes ให้คุณ <strong>เป็น</strong>.
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="rs-1"> RS.1 — Open Source Contribution (90-Day Plan)</h3>
+        <div class="chapter-meta">เป้า: 1 merged PR ใน OSS project ระดับโลก ภายใน 90 วัน</div>
+        <ul class="topic-list">
+          <li>Day 1-30: Pick project + lurk + fix typo PR</li>
+          <li>Day 31-60: Take "good first issue" — small bug fix</li>
+          <li>Day 61-90: ส่ง feature เล็กๆ หรือ docs ใหญ่</li>
+        </ul>
+        <div class="exercise">
+          <div class="exercise-title">RS.1.1 — เลือก project + commit pattern</div>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดูรายชื่อ project ที่ welcome contributor</button>
+          <div class="answer">
+            <table>
+              <tr><th>Track</th><th>Welcoming projects</th></tr>
+              <tr><td>A · Distributed</td><td>etcd, CockroachDB, FoundationDB, NATS</td></tr>
+              <tr><td>B · K8s</td><td>kubernetes-sigs/* (cluster-api, kustomize), Helm, Argo, Crossplane</td></tr>
+              <tr><td>C · Performance</td><td>Prometheus, Grafana, OpenTelemetry, k6, Bpftrace</td></tr>
+              <tr><td>D · Platform</td><td>Backstage, Crossplane, Flux, Tekton, Telepresence</td></tr>
+              <tr><td>E · Security</td><td>Falco, OPA/Gatekeeper, cosign/Sigstore, Trivy, Kyverno</td></tr>
+            </table>
+            <p><strong>Pattern ที่ work (จาก contributor หลายคน):</strong></p>
+            <ol>
+              <li>Lurk Slack + GitHub 2 สัปดาห์ก่อนพูด — เข้าใจ culture</li>
+              <li>PR แรกควรเล็กที่สุด: docs typo, error message clearer — ทดสอบ workflow</li>
+              <li>Comment ใน issue ที่จะ pick — รอ maintainer "go ahead"</li>
+              <li>เขียน PR description ดี — เพราะ maintainer time จำกัด</li>
+              <li>Sign DCO (Developer Certificate of Origin) ทุก commit</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="rs-2"> RS.2 — Side Project ที่มีคนใช้จริง</h3>
+        <div class="chapter-meta">เป้า: tool/service ที่มี ≥ 50 unique user ภายใน 6 เดือน</div>
+        <div class="exercise">
+          <div class="exercise-title">RS.2.1 — Pick &amp; ship</div>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู framework</button>
+          <div class="answer">
+            <p><strong>3 patterns ที่ work:</strong></p>
+            <ol>
+              <li><strong>"Solve your own problem":</strong> เครื่องมือที่คุณใช้ในงาน → คนอื่นที่งานคล้ายต้องการ. เช่น "Huawei cost analyzer CLI" — ถ้าคุณใช้ บริษัทไทยใช้ Huawei อีก 100 บริษัท</li>
+              <li><strong>"Better wrapper":</strong> tool ที่มีอยู่ + UX แย่ → คุณ wrap ให้ดี. เช่น <code>kubectl plugin</code> ที่ทำสิ่งซ้ำๆ ใน command เดียว</li>
+              <li><strong>"Aggregate &amp; visualize":</strong> data ที่มี API หลายที่ → dashboard เดียว. เช่น "All my Slack/Linear/PagerDuty alerts in one feed"</li>
+            </ol>
+            <p><strong>Distribution (ที่คนหามักลืม):</strong></p>
+            <ul>
+              <li>Day 1: เขียน README ดี (animated GIF demo)</li>
+              <li>Week 1: Submit Hacker News, Reddit r/devops, dev.to</li>
+              <li>Week 2: Tweet ที่ tag relevant ppl (ไม่ใช่ spam — ขอ feedback)</li>
+              <li>Month 1: Submit ที่ Awesome list (awesome-kubernetes, etc.)</li>
+              <li>Month 3: Talk ที่ meetup ท้องถิ่น</li>
+            </ul>
+            <p><strong>Track metric:</strong> GitHub stars, npm downloads, "people I never met" using it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="rs-3"> RS.3 — Tech Blog ที่ถูกอ่าน</h3>
+        <div class="chapter-meta">เป้า: 1 post ที่ &gt; 1000 view (= คนอ่านจริง ไม่ใช่แค่บอท)</div>
+        <div class="exercise">
+          <div class="exercise-title">RS.3.1 — เลือก angle + ship</div>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู topic patterns ที่ work</button>
+          <div class="answer">
+            <p><strong>Topics ที่คนคลิก:</strong></p>
+            <ul>
+              <li><strong>"How we X" with numbers:</strong> "How we cut DB cost 40% in 3 weeks" (specific, measurable)</li>
+              <li><strong>Postmortem:</strong> "How we accidentally DDoS'd ourselves" (transparent, learning)</li>
+              <li><strong>Deep dive into something obscure:</strong> "How K8s scheduler decides where to put your pod"</li>
+              <li><strong>Comparison:</strong> "Pulumi vs Terraform after 18 months" (with code, screenshots)</li>
+              <li><strong>Tutorial with footnotes:</strong> "Setting up X — and the 5 footguns nobody warns you about"</li>
+            </ul>
+            <p><strong>Distribution channels:</strong></p>
+            <ul>
+              <li>Personal blog (own SEO equity) → cross-post to Medium/dev.to</li>
+              <li>Submit ไป Hacker News (Sunday/Monday morning UTC ดีสุด)</li>
+              <li>r/devops, r/kubernetes, r/programming</li>
+              <li>Tweet thread สรุป + link</li>
+              <li>LinkedIn — ปกติคนไม่อ่านยาว แต่ comment คนอื่นเห็น</li>
+            </ul>
+            <p><strong>กฎ:</strong> ไม่จำเป็นต้องเขียนทุกสัปดาห์. 1 post ดีต่อ quarter &gt; 12 post ธรรมดา</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="rs-4"> RS.4 — Mentor Junior (เพราะสอน = เรียน 2x)</h3>
+        <div class="chapter-meta">เป้า: mentor ≥ 1 junior 6 เดือนเต็ม (1-on-1 ทุก 2 สัปดาห์)</div>
+        <div class="exercise">
+          <div class="exercise-title">RS.4.1 — Setup mentorship cadence</div>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู framework</button>
+          <div class="answer">
+            <p><strong>Cadence ที่ work:</strong></p>
+            <ul>
+              <li>Bi-weekly 1-on-1 30 นาที — ไม่ใช่ tech help, แต่คือ "อะไรติดอยู่"</li>
+              <li>Mentee เป็นคนเตรียม agenda (ฝึก ownership)</li>
+              <li>คุณถามมากกว่าตอบ ("คุณคิดว่าเริ่มที่ไหนดี?")</li>
+              <li>ทุก quarter ทบทวน goal ใหญ่</li>
+            </ul>
+            <p><strong>ทำไมนี่คือ track 2 ของการเรียน:</strong></p>
+            <ul>
+              <li>คำถามของ junior เปิด blind spot ของคุณ — "ทำไม K8s ใช้ etcd ไม่ใช่ Postgres" ทำให้คุณต้อง re-derive</li>
+              <li>การอธิบายซ้ำๆ ทำให้ mental model ของคุณคมขึ้น</li>
+              <li>เห็น pattern ของ "ความสับสน" → คุณเขียน docs ดีขึ้น</li>
+              <li>Network: junior ที่คุณ mentor วันนี้ = peer ใน 5 ปี</li>
+            </ul>
+            <p><strong>หา mentee จาก:</strong> ในทีม, internal mentorship program, ADPlist (free platform), TwT/X</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3><input type="checkbox" class="chapter-checkbox" data-id="rs-5"> RS.5 — Talk ที่ meetup / conference</h3>
+        <div class="chapter-meta">เป้า: 1 talk ภายใน 12 เดือน (เริ่มจาก internal → meetup → conference)</div>
+        <div class="exercise">
+          <div class="exercise-title">RS.5.1 — Build talk progression</div>
+          <button class="reveal-btn" onclick="toggleAnswer(this)">ดู progression</button>
+          <div class="answer">
+            <p><strong>Step ladder:</strong></p>
+            <ol>
+              <li><strong>Internal (low risk):</strong> Brown-bag/tech talk ในทีม — 15 นาที, audience friendly</li>
+              <li><strong>Internal cross-team:</strong> Engineering all-hands — 20 นาที, หลายทีมฟัง</li>
+              <li><strong>Local meetup:</strong> Bangkok DevOps, Go Bangkok, K8s TH — 30 นาที</li>
+              <li><strong>Regional:</strong> KCD Bangkok, FOSSASIA — 40 นาที</li>
+              <li><strong>Conference:</strong> KubeCon, CloudNativeRejekts — submit CFP</li>
+            </ol>
+            <p><strong>Topics ที่ meetup welcome:</strong></p>
+            <ul>
+              <li>"How we [solved problem] in [stack]"</li>
+              <li>"Lessons from [outage / migration / scaling event]"</li>
+              <li>"Deep dive: [specific tool / concept]"</li>
+              <li>NOT: "Intro to Docker" (มีเยอะแล้ว)</li>
+            </ul>
+            <p><strong>Public speaking ที่ดี = practice ครั้งที่ 5 ขึ้นไป.</strong> อย่ายอมแพ้หลังครั้งแรกที่อึดอัด</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ READING LIST ============ -->
+    <section class="track" id="reading" style="border-top-color: var(--accent-2);">
+      <h2 style="color: var(--accent-2);">📚 Reading List — ของจริง</h2>
+      <div class="track-meta">หนังสือ + paper ที่ Senior+ ทุกคน "เคยอ่าน" — แม้ไม่จำทุกบท แต่จำหลักได้</div>
+
+      <div class="chapter">
+        <h3>Books (เลือก 2-3 เล่มต่อ track ที่เลือก)</h3>
+        <table>
+          <tr><th>Track</th><th>Must-read</th></tr>
+          <tr><td>A · Distributed</td><td>"Designing Data-Intensive Applications" (Kleppmann) — ✨ classic, "Database Internals" (Petrov)</td></tr>
+          <tr><td>B · K8s</td><td>"Kubernetes Patterns" (Ibryam &amp; Huss), "Programming Kubernetes" (Hausenblas) — for controllers</td></tr>
+          <tr><td>C · Performance</td><td>"Systems Performance" (Brendan Gregg) — ✨, "BPF Performance Tools" (Gregg), "High Performance Browser Networking" (Grigorik)</td></tr>
+          <tr><td>D · Platform</td><td>"Team Topologies" (Skelton &amp; Pais) — ✨, "Accelerate" (Forsgren et al), "The DevOps Handbook" (Kim et al)</td></tr>
+          <tr><td>E · Security</td><td>"Threat Modeling" (Shostack) — ✨, "Container Security" (Rice), "The Tangled Web" (Zalewski)</td></tr>
+          <tr><td>All</td><td>"Site Reliability Engineering" (Google) — free online, "The SRE Workbook"</td></tr>
+        </table>
+      </div>
+
+      <div class="chapter">
+        <h3>Foundational Papers (อ่าน &gt;= 5 อันใน 6 เดือน)</h3>
+        <ol>
+          <li><strong>Dynamo</strong> (Amazon, 2007) — "Dynamo: Amazon's Highly Available Key-value Store"</li>
+          <li><strong>BigTable</strong> (Google, 2006) — "Bigtable: A Distributed Storage System for Structured Data"</li>
+          <li><strong>MapReduce</strong> (Google, 2004) — "MapReduce: Simplified Data Processing on Large Clusters"</li>
+          <li><strong>Spanner</strong> (Google, 2012) — "Spanner: Google's Globally-Distributed Database"</li>
+          <li><strong>Raft</strong> (Ongaro, 2014) — "In Search of an Understandable Consensus Algorithm"</li>
+          <li><strong>SWIM</strong> (Das, 2002) — "SWIM: Scalable Weakly-consistent Infection-style Process Group Membership Protocol"</li>
+          <li><strong>The Tail at Scale</strong> (Dean &amp; Barroso, 2013) — ทำไม P99 สำคัญที่ scale</li>
+          <li><strong>Borg / Kubernetes</strong> (Verma, 2015) — "Large-scale cluster management at Google with Borg"</li>
+          <li><strong>Time, Clocks, and the Ordering of Events</strong> (Lamport, 1978) — foundational</li>
+        </ol>
+        <p><strong>How to read paper:</strong> First pass (15 min) — abstract, intro, conclusion. Second pass (1 hr) — figures, methodology. Third pass (3-4 hr) — implement หรือ critically critique. ส่วนใหญ่ paper ไม่ต้องอ่าน 3 รอบ — เลือก paper ที่จะลึก.</p>
+      </div>
+
+      <div class="chapter">
+        <h3>Blogs / Newsletter (subscribe ทันที)</h3>
+        <ul>
+          <li><strong>Cloudflare Blog</strong> — postmortem + deep dive</li>
+          <li><strong>AWS Builder's Library</strong> — pattern จาก AWS engineer</li>
+          <li><strong>Brendan Gregg</strong> — performance bible</li>
+          <li><strong>Aphyr (Jepsen)</strong> — distributed systems testing</li>
+          <li><strong>Marc Brooker</strong> — AWS principal engineer, distributed systems</li>
+          <li><strong>danluu.com</strong> — long-form engineering essays</li>
+          <li><strong>The Pragmatic Engineer (Gergely Orosz)</strong> — newsletter, career + tech</li>
+          <li><strong>SRE Weekly</strong> — รวม postmortem + SRE content</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer style="margin: 80px 0 40px; padding: 24px; border-top: 1px solid var(--border); color: var(--muted); text-align: center;">
+      <p>Stage 2 Roadmap — สำหรับน้องที่จบ Stage 1 แล้วและพร้อมไปลึก</p>
+      <p>เลือก 1 track → ทำให้ลึก 6 เดือน → ค่อยพิจารณา track ที่ 2. ความคืบหน้าเก็บใน browser นี้.</p>
+      <p style="margin-top: 16px;"><a href="./devsecops-roadmap.html">← กลับไป Stage 1 Roadmap</a></p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    if (ans.classList.contains('show')) {
+      ans.classList.remove('show');
+      btn.textContent = btn.dataset.openLabel || 'ดูเฉลย';
+    } else {
+      if (!btn.dataset.openLabel) btn.dataset.openLabel = btn.textContent;
+      ans.classList.add('show');
+      btn.textContent = 'ซ่อนเฉลย';
+    }
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.answer').forEach(a => a.classList.add('show'));
+    document.querySelectorAll('.reveal-btn').forEach(b => b.textContent = 'ซ่อนเฉลย');
+  }
+
+  function hideAll() {
+    document.querySelectorAll('.answer').forEach(a => a.classList.remove('show'));
+    document.querySelectorAll('.reveal-btn').forEach(b => {
+      b.textContent = b.dataset.openLabel || 'ดูเฉลย';
+    });
+  }
+
+  const STORAGE_KEY = 'devsecops-roadmap-stage2-progress';
+
+  function loadProgress() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
+  }
+
+  function saveProgress(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { console.warn('localStorage unavailable', e); }
+  }
+
+  function updateProgressUI() {
+    const boxes = document.querySelectorAll('.chapter-checkbox');
+    const total = boxes.length;
+    const done = Array.from(boxes).filter(b => b.checked).length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progress-text').textContent = `${done} / ${total} (${pct}%)`;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function resetProgress() {
+    if (!confirm('ล้างความคืบหน้าทั้งหมด?')) return;
+    saveProgress({});
+    document.querySelectorAll('.chapter-checkbox').forEach(b => b.checked = false);
+    updateProgressUI();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const state = loadProgress();
+    document.querySelectorAll('.chapter-checkbox').forEach(box => {
+      const id = box.dataset.id;
+      box.checked = !!state[id];
+      box.addEventListener('change', () => {
+        const s = loadProgress();
+        s[id] = box.checked;
+        saveProgress(s);
+        updateProgressUI();
+      });
+    });
+    updateProgressUI();
+  });
+</script>
+</body>
+</html>
+
